@@ -541,7 +541,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F3BB5507B7F9F33E4255CCB3 /* Pods-PersistenceFrameworkTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TDPW677V66;
 				INFOPLIST_FILE = PersistenceFrameworkTests/Info.plist;
@@ -557,7 +556,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6F6AB9017BFAF7CCCE834D74 /* Pods-PersistenceFrameworkTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TDPW677V66;
 				INFOPLIST_FILE = PersistenceFrameworkTests/Info.plist;
