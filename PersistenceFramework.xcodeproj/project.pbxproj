@@ -7,10 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		403079E32058681B00B2D0C2 /* CoreDataAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403079E22058681B00B2D0C2 /* CoreDataAPI.swift */; };
+		403079E52058682300B2D0C2 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403079E42058682300B2D0C2 /* CoreDataManager.swift */; };
+		403079E920586ACF00B2D0C2 /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403079E820586ACF00B2D0C2 /* DatabaseHelper.swift */; };
+		403079EB205879AA00B2D0C2 /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403079EA205879AA00B2D0C2 /* CoreDataManagerTests.swift */; };
+		403079EE205896FE00B2D0C2 /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 403079EC205896FE00B2D0C2 /* TestModel.xcdatamodeld */; };
 		40426FC3204F3B4B00720A53 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40426FC1204F3B4B00720A53 /* Bundle.swift */; };
 		40426FC4204F3B4B00720A53 /* Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40426FC2204F3B4B00720A53 /* Url.swift */; };
 		40BD6D02204F367B006ACB55 /* PersistenceFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40BD6CF8204F367B006ACB55 /* PersistenceFramework.framework */; };
-		40BD6D07204F367B006ACB55 /* PersistenceFrameworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BD6D06204F367B006ACB55 /* PersistenceFrameworkTests.swift */; };
+		40BD6D07204F367B006ACB55 /* RealmManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BD6D06204F367B006ACB55 /* RealmManagerTests.swift */; };
 		40BD6D09204F367B006ACB55 /* PersistenceFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BD6CFB204F367B006ACB55 /* PersistenceFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		40BD6D15204F36C7006ACB55 /* RealmAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BD6D14204F36C7006ACB55 /* RealmAPI.swift */; };
 		40BD6D1A204F36FC006ACB55 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BD6D19204F36FC006ACB55 /* RealmManager.swift */; };
@@ -31,13 +36,18 @@
 /* Begin PBXFileReference section */
 		258FD223444D8947CB1F019A /* Pods_PersistenceFrameworkTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PersistenceFrameworkTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3255651D4871416F100B57DE /* Pods-PersistenceFramework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersistenceFramework.release.xcconfig"; path = "Pods/Target Support Files/Pods-PersistenceFramework/Pods-PersistenceFramework.release.xcconfig"; sourceTree = "<group>"; };
+		403079E22058681B00B2D0C2 /* CoreDataAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataAPI.swift; sourceTree = "<group>"; };
+		403079E42058682300B2D0C2 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		403079E820586ACF00B2D0C2 /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
+		403079EA205879AA00B2D0C2 /* CoreDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerTests.swift; sourceTree = "<group>"; };
+		403079ED205896FE00B2D0C2 /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
 		40426FC1204F3B4B00720A53 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		40426FC2204F3B4B00720A53 /* Url.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Url.swift; sourceTree = "<group>"; };
 		40BD6CF8204F367B006ACB55 /* PersistenceFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PersistenceFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		40BD6CFB204F367B006ACB55 /* PersistenceFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersistenceFramework.h; sourceTree = "<group>"; };
 		40BD6CFC204F367B006ACB55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40BD6D01204F367B006ACB55 /* PersistenceFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PersistenceFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		40BD6D06204F367B006ACB55 /* PersistenceFrameworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceFrameworkTests.swift; sourceTree = "<group>"; };
+		40BD6D06204F367B006ACB55 /* RealmManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManagerTests.swift; sourceTree = "<group>"; };
 		40BD6D08204F367B006ACB55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40BD6D14204F36C7006ACB55 /* RealmAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmAPI.swift; sourceTree = "<group>"; };
 		40BD6D19204F36FC006ACB55 /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
@@ -79,6 +89,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		403079E12058680700B2D0C2 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				403079E22058681B00B2D0C2 /* CoreDataAPI.swift */,
+				403079E42058682300B2D0C2 /* CoreDataManager.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		403079E720586ABE00B2D0C2 /* Commons */ = {
+			isa = PBXGroup;
+			children = (
+				40426FC0204F3AE600720A53 /* Extensions */,
+				403079E820586ACF00B2D0C2 /* DatabaseHelper.swift */,
+			);
+			path = Commons;
+			sourceTree = "<group>";
+		};
 		40426FC0204F3AE600720A53 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,7 +139,8 @@
 		40BD6CFA204F367B006ACB55 /* PersistenceFramework */ = {
 			isa = PBXGroup;
 			children = (
-				40426FC0204F3AE600720A53 /* Extensions */,
+				403079E720586ABE00B2D0C2 /* Commons */,
+				403079E12058680700B2D0C2 /* CoreData */,
 				40BD6D13204F36B0006ACB55 /* Realm */,
 				40BD6CFB204F367B006ACB55 /* PersistenceFramework.h */,
 				40BD6CFC204F367B006ACB55 /* Info.plist */,
@@ -122,8 +151,10 @@
 		40BD6D05204F367B006ACB55 /* PersistenceFrameworkTests */ = {
 			isa = PBXGroup;
 			children = (
-				40BD6D06204F367B006ACB55 /* PersistenceFrameworkTests.swift */,
+				403079EA205879AA00B2D0C2 /* CoreDataManagerTests.swift */,
+				40BD6D06204F367B006ACB55 /* RealmManagerTests.swift */,
 				40BD6D08204F367B006ACB55 /* Info.plist */,
+				403079EC205896FE00B2D0C2 /* TestModel.xcdatamodeld */,
 			);
 			path = PersistenceFrameworkTests;
 			sourceTree = "<group>";
@@ -131,8 +162,8 @@
 		40BD6D13204F36B0006ACB55 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				40BD6D19204F36FC006ACB55 /* RealmManager.swift */,
 				40BD6D14204F36C7006ACB55 /* RealmAPI.swift */,
+				40BD6D19204F36FC006ACB55 /* RealmManager.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -351,9 +382,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				403079E52058682300B2D0C2 /* CoreDataManager.swift in Sources */,
 				40BD6D15204F36C7006ACB55 /* RealmAPI.swift in Sources */,
 				40426FC3204F3B4B00720A53 /* Bundle.swift in Sources */,
+				403079E920586ACF00B2D0C2 /* DatabaseHelper.swift in Sources */,
 				40BD6D1A204F36FC006ACB55 /* RealmManager.swift in Sources */,
+				403079E32058681B00B2D0C2 /* CoreDataAPI.swift in Sources */,
 				40426FC4204F3B4B00720A53 /* Url.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,7 +396,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40BD6D07204F367B006ACB55 /* PersistenceFrameworkTests.swift in Sources */,
+				403079EE205896FE00B2D0C2 /* TestModel.xcdatamodeld in Sources */,
+				40BD6D07204F367B006ACB55 /* RealmManagerTests.swift in Sources */,
+				403079EB205879AA00B2D0C2 /* CoreDataManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -598,6 +634,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		403079EC205896FE00B2D0C2 /* TestModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				403079ED205896FE00B2D0C2 /* TestModel.xcdatamodel */,
+			);
+			currentVersion = 403079ED205896FE00B2D0C2 /* TestModel.xcdatamodel */;
+			path = TestModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 40BD6CEF204F367B006ACB55 /* Project object */;
 }

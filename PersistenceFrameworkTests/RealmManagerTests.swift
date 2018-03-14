@@ -10,12 +10,12 @@ import XCTest
 import RealmSwift
 @testable import PersistenceFramework
 
-class PersistenceFrameworkTests: XCTestCase {
+class RealmManagerTests: XCTestCase {
     
-    private let testBundle = Bundle(for: PersistenceFrameworkTests.self)
-    private let testDatabaseName = "testDatabase"
+    private let testBundle = Bundle(for: RealmManagerTests.self)
+    private let testDatabaseName = "testRealmDatabase"
+    private let testDatabaseNameTwo = "testRealmDatabaseTwo"
     private let testDatabasePassphrase = "passphrase"
-//    private var realmClass: RealmManager!
     private let lastSchemaVersion: UInt64 = 0
     
     override func setUp() {
@@ -25,33 +25,27 @@ class PersistenceFrameworkTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        RealmManager_deleteAllRealm()
+        try? RealmManager_deleteAllRealm()
         super.tearDown()
     }
     
-    func test_01_Initialize_OK() {
+    func test_01_Initialize_Single() {
         XCTAssertNoThrow(try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase))
     }
     
-    func test_01_Initialize_KO_01_No_DatabaseName() {
-        XCTAssertThrowsError(try RealmManager.initialize(databaseKey: "", passphrase: testDatabasePassphrase, schemaVersion: lastSchemaVersion, migrationBlock: nil)) { (error) -> Void in
+    func test_01_Initialize_Multi() {
+        XCTAssertNoThrow(try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase))
+        XCTAssertNoThrow(try RealmManagerInit(databaseName: testDatabaseNameTwo, bundle: testBundle, passphrase: testDatabasePassphrase))
+    }
+    
+    func test_01_Initialize_Repeated() {
+        XCTAssertNoThrow(try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase))
+        XCTAssertThrowsError(try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)) { (error) -> Void in
             XCTAssertNotNil(error)
         }
     }
     
-    func test_01_Initialize_KO_02_No_DatabasePassphrase() {
-        XCTAssertThrowsError(try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: "")) { (error) -> Void in
-            XCTAssertNotNil(error)
-        }
-    }
-    
-    func test_02_checkStack() {
-        let retStack = RealmManager_currentStack(databaseName: testDatabaseName, forBundle: testBundle)
-        XCTAssertNotNil(retStack, "It's nil")
-        print(retStack)
-    }
-    
-    func test_03_getRealmContext() {
+    func test_02_GetRealmContext() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
         } catch  {
@@ -60,10 +54,12 @@ class PersistenceFrameworkTests: XCTestCase {
         
         let realmsInstance = RealmManager_getRealm(databaseName: testDatabaseName, forBundle: testBundle)
         XCTAssertNotNil(realmsInstance, "It's nil")
+        
+        let realmsInstanceTwo = RealmManager_getRealm(databaseName: testDatabaseNameTwo, forBundle: testBundle)
+        XCTAssertNil(realmsInstanceTwo, "It's not nil")
     }
     
-    func test_04_Migration_DifferentScenarios() {
-        
+    func test_03_Migration_DifferentScenarios() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase, schemaVersion: lastSchemaVersion, migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 1 && self.lastSchemaVersion >= 1) {
@@ -97,7 +93,7 @@ class PersistenceFrameworkTests: XCTestCase {
         XCTAssertNotNil(realmContext, "It's nil")
     }
     
-    func test_05_ModelObject_01_CreateObject() {
+    func test_04_ModelObject_01_Create() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
         } catch  {
@@ -114,7 +110,7 @@ class PersistenceFrameworkTests: XCTestCase {
         }
     }
     
-    func test_05_ModelObject_02_ReadObject() {
+    func test_04_ModelObject_02_Read() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
         } catch  {
@@ -135,7 +131,7 @@ class PersistenceFrameworkTests: XCTestCase {
         }
     }
     
-    func test_05_ModelObject_03_UpdateObject() {
+    func test_04_ModelObject_03_Update() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
         } catch  {
@@ -157,7 +153,7 @@ class PersistenceFrameworkTests: XCTestCase {
         }
     }
     
-    func test_05_ModelObject_04_DeleteObject() {
+    func test_04_ModelObject_04_Delete() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
         } catch  {
@@ -179,29 +175,37 @@ class PersistenceFrameworkTests: XCTestCase {
         }
     }
     
-    func test_06_Delete_01_CleanUp_01() {
+    func test_05_CleanUpCache_Single() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
+            try RealmManagerInit(databaseName: testDatabaseNameTwo, bundle: testBundle, passphrase: testDatabasePassphrase)
         } catch  {
             XCTFail()
         }
         RealmManager_cleanUp(databaseName: testDatabaseName, forBundle: testBundle)
         let realmContext = RealmManager_getRealm(databaseName: testDatabaseName, forBundle: testBundle)
         XCTAssertNil(realmContext, "It's not nil")
+        
+        let realmContextTwo = RealmManager_getRealm(databaseName: testDatabaseNameTwo, forBundle: testBundle)
+        XCTAssertNotNil(realmContextTwo, "It's nil")
     }
     
-    func test_06_Delete_01_CleanUp_02() {
+    func test_05_CleanUpCache_All() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
+            try RealmManagerInit(databaseName: testDatabaseNameTwo, bundle: testBundle, passphrase: testDatabasePassphrase)
         } catch  {
             XCTFail()
         }
-        RealmManager_cleanUp(databaseName: testDatabaseName, forBundle: testBundle)
+        RealmManager_cleanUpAll()
         let realmContext = RealmManager_getRealm(databaseName: testDatabaseName, forBundle: testBundle)
         XCTAssertNil(realmContext, "It's not nil")
+        
+        let realmContextTwo = RealmManager_getRealm(databaseName: testDatabaseNameTwo, forBundle: testBundle)
+        XCTAssertNil(realmContextTwo, "It's not nil")
     }
     
-    func test_06_Delete_02_All() {
+    func test_06_DeleteAll() {
         do {
             try RealmManagerInit(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
         } catch  {
@@ -211,30 +215,17 @@ class PersistenceFrameworkTests: XCTestCase {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = urls[urls.count-1]
         
-        let realmFile = documentsDirectory.appendingPathComponent(getDatabaseKey(databaseName: testDatabaseName, bundle: testBundle) + ".realm")
+        let realmFile = documentsDirectory.appendingPathComponent(DatabaseHelper.getDatabaseKey(databaseName: testDatabaseName, bundle: testBundle) + ".realm")
         XCTAssertTrue(FileManager.default.fileExists(atPath: realmFile.path), "Realm file not exist")
         
-        RealmManager_deleteAllRealm()
-        let realmFileDeleted = documentsDirectory.appendingPathComponent(getDatabaseKey(databaseName: testDatabaseName, bundle: testBundle) + ".realm")
+        XCTAssertNoThrow(try RealmManager_deleteAllRealm())
+        let realmFileDeleted = documentsDirectory.appendingPathComponent(DatabaseHelper.getDatabaseKey(databaseName: testDatabaseName, bundle: testBundle) + ".realm")
         XCTAssertFalse(FileManager.default.fileExists(atPath: realmFileDeleted.path), "Realm file exist")
     }
     
     func test99_Performance() {
-        
         self.measure {
-            test_01_Initialize_OK()
-            test_01_Initialize_KO_01_No_DatabaseName()
-            test_01_Initialize_KO_02_No_DatabasePassphrase()
-            test_02_checkStack()
-            test_03_getRealmContext()
-            test_04_Migration_DifferentScenarios()
-            test_05_ModelObject_01_CreateObject()
-            test_05_ModelObject_02_ReadObject()
-            test_05_ModelObject_03_UpdateObject()
-            test_05_ModelObject_04_DeleteObject()
-            test_06_Delete_01_CleanUp_01()
-            test_06_Delete_01_CleanUp_02()
-            test_06_Delete_02_All()
+            
         }
     }
 }
