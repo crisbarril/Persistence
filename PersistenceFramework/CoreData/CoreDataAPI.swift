@@ -19,6 +19,9 @@ import CoreData
     - databaseName: Name to identify the database in the bundle.
     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
     - modelURL: Path URL to the data model.
+ 
+ - throws:
+ NSError with the description of the problem.
  */
 @available(iOS, message: "This function is only available for iOS.")
 public func CoreDataManagerInit(databaseName: String, bundle: Bundle = Bundle.main, modelURL: URL) throws {
@@ -32,6 +35,9 @@ public func CoreDataManagerInit(databaseName: String, bundle: Bundle = Bundle.ma
 
 /**
  Recover the specific context for the requested database.
+ 
+ - returns:
+ Core Data context to use the database. Can be nil.
  
  - parameters:
      - databaseName: Name to identify the database in the bundle.
@@ -49,6 +55,9 @@ public func CoreDataManager_getContext(databaseName: String, forBundle bundle: B
  - parameters:
      - databaseName: Name to identify the database in the bundle.
      - bundle: The bundle of the database. Optional, default is _Bundle.main_.
+ 
+ - throws:
+ NSError with the description of the problem.
  */
 @available(iOS, message: "This function is only available for iOS.")
 public func CoreDataManager_saveContext(databaseName: String, forBundle bundle: Bundle = Bundle.main) throws {
@@ -66,7 +75,6 @@ public func CoreDataManager_saveContext(databaseName: String, forBundle bundle: 
      - databaseName: Name to identify the database in the bundle.
      - bundle: The bundle of the database. Optional, default is _Bundle.main_.
  */
-
 @available(iOS, message: "This function is only available for iOS.")
 public func CoreDataManager_cleanUp(databaseName: String, forBundle bundle: Bundle = Bundle.main) {
     let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
@@ -89,6 +97,9 @@ public func CoreDataManager_cleanUpAll() {
  
  - Important:
  All databases will be **deleted**. This action cannot be undone.
+ 
+ - throws:
+ NSError with the description of the problem.
  */
 @available(iOS, message: "This function is only available for iOS.")
 public func CoreDataManager_deleteAllCoreData() throws {
