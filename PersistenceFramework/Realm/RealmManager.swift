@@ -28,12 +28,7 @@ struct RealmManager {
         }
         
         if realmContexts[databaseKey] != nil {
-            var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Already initialized" as AnyObject?
-            dict[NSLocalizedFailureReasonErrorKey] = "Already initialized Realm database with key: \(databaseKey)." as AnyObject?
-            
-            let wrappedError = NSError(domain: "RealmManager", code: 999, userInfo: dict)
-            throw wrappedError
+            throw ErrorFactory.createError(withKey: "Already initialized", failureReason: "Already initialized Realm database with key: \(databaseKey).", domain: "RealmManager")
         }
 
         var persistedSchemaVersion = getSchemaVersion(databaseKey: databaseKey)

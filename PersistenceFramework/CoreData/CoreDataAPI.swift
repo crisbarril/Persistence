@@ -13,7 +13,7 @@ import CoreData
 public func CoreDataManagerInit(databaseName: String, bundle: Bundle, modelURL: URL) throws {
     let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
     do {
-        try CoreDataManager.initialize(databaseKey, modelURL: modelURL)
+        try CoreDataManager.initialize(databaseKey, bundle: bundle, modelURL: modelURL)
     } catch {
         throw error
     }
