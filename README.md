@@ -139,7 +139,7 @@ public func RealmManagerInit(databaseName: String, bundle: Bundle, passphrase: S
      - databaseName: Name to identify the database in the bundle.
      - bundle: The bundle of the database. Optional, default is _Bundle.main_.
      - passphrase: Passphrase to encrypt the database. Cannot be an empty String.
-     - schemaVersion: Current schema version. Optional, default is _0_.
+     - schemaVersion: Current schema version. Optional, default is 0.
      - migrationBlock: Closure with the logic to migrate the model. Optional, default is _nil_.
  
  - throws:
