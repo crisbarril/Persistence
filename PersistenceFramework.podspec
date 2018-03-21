@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "PersistenceFramework"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "Persistence Framework"
   s.description  = "Framework to encapsulate persistence logic"
   s.homepage     = "https://github.com/crisbarril/PersistenceFramework"
