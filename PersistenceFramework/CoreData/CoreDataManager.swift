@@ -103,7 +103,7 @@ struct CoreDataManager {
     
     private static func loadPersistentContainer(_ databaseKey: String, managedObjectModel: NSManagedObjectModel) throws -> NSPersistentContainer? {
         let container = NSPersistentContainer(name: databaseKey, managedObjectModel: managedObjectModel)
-        let url = getStoreUrl(databaseKey)
+        let url = DatabaseHelper.getStoreUrl(databaseKey)
         
         // Create Persistent Store Description
         let persistentStoreDescription = NSPersistentStoreDescription(url: url)
@@ -139,10 +139,6 @@ struct CoreDataManager {
         return container
     }
     
-    private static func getStoreUrl(_ databaseKey: String) -> URL {
-        return URL.applicationDocumentsDirectory().appendingPathComponent(databaseKey)
-    }
-    
     private static func currentStack(_ databaseKey: String, managedObjectModel: NSManagedObjectModel, container: NSPersistentContainer) -> String {
         let onThread: String = Thread.isMainThread ? "*** MAIN THREAD ***" : "*** BACKGROUND THREAD ***"
         var status: String = "---- Current Default Core Data Stack: ----\n"
@@ -162,7 +158,7 @@ struct CoreDataManager {
     // MARK: - migration privates methods
     private static func isMigrationNeeded(_ databaseKey: String, managedObjectModel: NSManagedObjectModel) -> Bool {
 
-        let storeUrl =  getStoreUrl(databaseKey)
+        let storeUrl = DatabaseHelper.getStoreUrl(databaseKey)
         
         guard FileManager.default.fileExists(atPath: storeUrl.path) else {
             print("Doesn't exist store with key: \(databaseKey). New database.")
@@ -182,7 +178,7 @@ struct CoreDataManager {
     
     private static func migrate(_ databaseKey: String, bundle: Bundle, currentManagedObjectModel: NSManagedObjectModel) throws {
 
-        let storeUrl =  getStoreUrl(databaseKey)
+        let storeUrl = DatabaseHelper.getStoreUrl(databaseKey)
         
         guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeUrl, options: nil) else {
             print("FAILED to recover store metadata.")

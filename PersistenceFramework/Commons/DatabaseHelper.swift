@@ -10,7 +10,11 @@ import Foundation
 
 struct DatabaseHelper {
  
-    static internal func getDatabaseKey(databaseName: String, bundle: Bundle) -> String {
+    internal static func getDatabaseKey(databaseName: String, bundle: Bundle) -> String {
         return "\(bundle.getName())Bundle.\(databaseName)"
+    }
+    
+    internal static func getStoreUrl(_ databaseKey: String) -> URL {
+        return URL.applicationDocumentsDirectory().appendingPathComponent(databaseKey)
     }
 }
