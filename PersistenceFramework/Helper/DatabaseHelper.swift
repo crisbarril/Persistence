@@ -8,12 +8,7 @@
 
 import Foundation
 
-struct DatabaseHelper {
- 
-    internal static func getDatabaseKey(databaseName: String, bundle: Bundle) -> String {
-        return "\(bundle.getName())Bundle.\(databaseName)"
-    }
-    
+struct DatabaseHelper {    
     internal static func getStoreUrl(_ databaseKey: String) -> URL {
         return URL.applicationDocumentsDirectory().appendingPathComponent(databaseKey)
     }

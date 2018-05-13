@@ -2,91 +2,85 @@
 //  RealmAPI.swift
 //  PersistenceFramework
 //
-//  Created by Cristian on 06/03/2018.
+//  Created by Cristian on 13/05/2018.
 //  Copyright © 2018 Cristian Barril. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
-/**
- Constructor for Realm database.
- 
- - Important:
- This method **must** be called once, before attempting to use the database.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
-     - passphrase: Passphrase to encrypt the database. Cannot be an empty String.
-     - schemaVersion: Current schema version. Optional, default is _0_.
-     - migrationBlock: Closure with the logic to migrate the model. Optional, default is _nil_.
- 
- - throws:
- NSError with the description of the problem.
- */
-public func RealmManagerInit(databaseName: String, bundle: Bundle, passphrase: String, schemaVersion: UInt64 = 0, migrationBlock: MigrationBlock? = nil) throws {
-    let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
-    do {
-        try RealmManager.initialize(databaseKey: databaseKey, passphrase: passphrase, schemaVersion: schemaVersion, migrationBlock: migrationBlock)
-    } catch {
-        throw error
+extension Object: DatabaseObjectTypeProtocol {}
+
+public final class RealmAPI: DatabaseProtocol {
+    public typealias DatabaseObjectType = Object
+    public typealias DatabaseContextType = Realm
+    public let databaseConfiguration: DatabaseConfigurationProtocol
+    public let databaseContext: Realm
+    
+    let realmInstance: RealmImplementation
+    
+    internal init(databaseConfiguration: DatabaseConfigurationProtocol, realmInstance: RealmImplementation) throws {
+        self.databaseConfiguration = databaseConfiguration
+        self.realmInstance = realmInstance
+        
+        guard let context = realmInstance.getContext(databaseConfiguration.databaseKey) else {
+            throw ErrorFactory.createError(withKey: "Recovering Context", failureReason: "Couldn't recover Realm context for database with key: \(databaseConfiguration.databaseKey).", domain: "RealmAPI")
+        }
+        
+        self.databaseContext = context
+    }
+    
+    public func getContext() -> Realm {
+        return databaseContext
+    }
+    
+    public func create<ReturnType>() -> ReturnType? where ReturnType : DatabaseObjectTypeProtocol {
+        return ReturnType()
+    }
+    
+    public func recover<ReturnType>(key: String = "", value: String = "") -> [ReturnType]? where ReturnType : DatabaseObjectTypeProtocol {
+        guard let returnClass = ReturnType.self as? Object.Type else {
+            return nil
+        }
+        
+        let resultObjects = databaseContext.objects(returnClass)
+        
+        if !key.isEmpty && !value.isEmpty {
+            let filteredResultObjects = resultObjects.filter("\(key) = '\(value)'")
+            return Array(filteredResultObjects) as? [ReturnType]
+        }
+        
+        return Array(resultObjects) as? [ReturnType]
+    }
+    
+    public func delete(_ object: Object) -> Bool {
+        do {
+            try databaseContext.write {
+                databaseContext.delete(object)
+            }
+            return true
+        } catch {
+            print("Fail to delete object: \(object)")
+            return false
+        }
     }
 }
 
-/**
- Recover the specific context for the requested database.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- 
- - returns:
- Realm object to use the database. Can be nil.
- */
-public func RealmManager_getRealm(databaseName: String, forBundle bundle: Bundle) -> Realm? {
-    let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
-    return RealmManager.getRealm(databaseKey: databaseKey)
-}
-
-/**
- Remove the context instance generated in the constructor method for the requested database.
- 
- - Important:
- Use this method to avoid future uses of the database in the current life cycle of the app.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- */
-public func RealmManager_cleanUp(databaseName: String, forBundle bundle: Bundle) {
-    let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
-    RealmManager.cleanUp(databaseKey: databaseKey)
-}
-
-/**
- Remove all context instances generated in the constructor method.
- 
- - Important:
- Use this method to avoid future uses of any Core Data database in the current life cycle of the app.
- */
-public func RealmManager_cleanUpAll() {
-    RealmManager.cleanUpAll()
-}
-
-/**
- Delete all databases files from sandbox.
- 
- - Important:
- All databases will be **deleted**. This action cannot be undone.
- 
- - throws:
- NSError with the description of the problem.
- */
-public func RealmManager_deleteAllRealm() throws {
-    do {
-        try RealmManager.deleteAllRealm()
-    } catch {
-        throw error
-    }    
+extension RealmAPI: Updatable {
+    public func update<T>(_ object: T) -> Bool where T : DatabaseObjectTypeProtocol {
+        guard let objectClass = T.self as? Object.Type, let objectInstance = object as? Object else {
+            return false
+        }
+        
+        let hasPrimaryKey = objectClass.primaryKey() != nil
+        
+        do {
+            try databaseContext.write {
+                databaseContext.add(objectInstance, update: hasPrimaryKey)
+            }
+            return true
+        } catch {
+            print("Fail to delete object: \(object)")
+            return false
+        }
+    }
 }

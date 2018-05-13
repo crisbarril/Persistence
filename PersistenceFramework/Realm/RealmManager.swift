@@ -2,84 +2,86 @@
 //  RealmManager.swift
 //  PersistenceFramework
 //
-//  Created by Cristian on 06/03/2018.
+//  Created by Cristian on 13/05/2018.
 //  Copyright © 2018 Cristian Barril. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
-///Class for Realm settings
-struct RealmManager {
+protocol RealmImplementation {
+    static var sharedInstance: RealmImplementation { get }
+    var realmContextCache: [String: Realm] { get }
+    
+    func initialize(_ builder: RealmBuilder) throws
+    func getContext(_ databaseKey: String) -> Realm?
+}
 
-    // MARK: - Privates properties
-    private static var realmContexts = [String: Realm]()
-    private static let schemaVersionKey = "schemaVersionKey"
-
-    // MARK: - Internal methods
-    internal static func initialize(databaseKey: String, passphrase: String, schemaVersion: UInt64, migrationBlock: MigrationBlock?) throws {
-        
-        guard !databaseKey.isEmpty else {
-            fatalError("RealmManager: Must specify a name for the initialization of the database")
+final class RealmManager: RealmImplementation {
+    // MARK: Singleton
+    static var sharedInstance: RealmImplementation = RealmManager()
+    
+    // MARK: Private properties
+    var realmContextCache: [String : Realm] = [:]
+    private let schemaVersionKey = "schemaVersionKey"
+    
+    func initialize(_ builder: RealmBuilder) throws {
+        guard realmContextCache[builder.databaseKey] == nil else {
+            print("Already initialized Realm database for key: \(builder.databaseKey).")
+            return
         }
         
-        guard !passphrase.isEmpty, let keyData = validPassphrase(passphrase) else {
-            fatalError("RealmManager: Must specify a valid passphrase for the initialization of the database")
+        guard !builder.passphrase.isEmpty, let keyData = validPassphrase(builder.passphrase) else {
+            throw ErrorFactory.createError(withKey: "Error passphrase", failureReason: "Error recovering passphrase from builder: \(builder)", domain: "RealmManager")
         }
         
-        if realmContexts[databaseKey] != nil {
-            throw ErrorFactory.createError(withKey: "Already initialized", failureReason: "Already initialized Realm database with key: \(databaseKey).", domain: "RealmManager")
-        }
-
-        var persistedSchemaVersion = getSchemaVersion(databaseKey: databaseKey)
-        if schemaVersion > persistedSchemaVersion {
-            persistedSchemaVersion = schemaVersion
+        var persistedSchemaVersion = getSchemaVersion(databaseKey: builder.databaseKey)
+        if builder.schemaVersion > persistedSchemaVersion {
+            persistedSchemaVersion = builder.schemaVersion
         }
         
-        let url = URL.applicationDocumentsDirectory().appendingPathComponent(databaseKey + ".realm")
+        let url = URL.applicationDocumentsDirectory().appendingPathComponent(builder.databaseKey + ".realm")
         let config = Realm.Configuration(
             fileURL: url,
             encryptionKey: keyData,
             schemaVersion: persistedSchemaVersion,
-            migrationBlock: migrationBlock
+            migrationBlock: builder.migrationBlock
         )
-
+        
         do {
             let realm = try Realm(configuration: config)
-            setContext(realm, databaseKey: databaseKey)
-            setSchemaVersion(persistedSchemaVersion, databaseKey: databaseKey)
-            print("All Realm settings for database \(databaseKey) done!\n \(currentStack(databaseKey))")
+            setContext(realm, databaseKey: builder.databaseKey)
+            setSchemaVersion(persistedSchemaVersion, databaseKey: builder.databaseKey)
+            print("All Realm settings for database \(builder.databaseKey) done!\n \(currentStack(builder.databaseKey))")
         } catch {
             let nserror = error as NSError
-            print("RealmManager - \(#function): Unresolved error for \(databaseKey): \(nserror), \(nserror.userInfo)")
-        
+            print("RealmManager - \(#function): Unresolved error for \(builder.databaseKey): \(nserror), \(nserror.userInfo)")
+            
             throw nserror
         }
     }
-
-    internal static func getRealm(databaseKey: String) -> Realm? {
-        return realmContexts[databaseKey]
+    
+    func getContext(_ databaseKey: String) -> Realm? {
+        return realmContextCache[databaseKey]
     }
     
-    internal static func cleanUp(databaseKey: String) {
-        setContext(nil, databaseKey: databaseKey)
-        print("RealmManager - \(#function): Clean DONE for \(databaseKey)")
-    }
-    
-    internal static func cleanUpAll() {
-        realmContexts = [String: Realm]()
+    internal func cleanUpAll() {
+        realmContextCache = [String: Realm]()
         print("RealmManager - \(#function): Clean DONE for all contexts")
     }
     
-    internal static func deleteAllRealm() throws {
+    internal func deleteAllRealm() throws {
         do {
-            for (key, _) in realmContexts {
+            for (key, context) in realmContextCache {
+                try! context.write {
+                    context.deleteAll()
+                }
                 let realmFile = URL.applicationDocumentsDirectory().appendingPathComponent(key + ".realm")
                 try FileManager.default.removeItem(at: realmFile)
                 let realmFileLock = URL.applicationDocumentsDirectory().appendingPathComponent(key + ".realm.lock")
                 try FileManager.default.removeItem(at: realmFileLock)
                 let realmManagement = URL.applicationDocumentsDirectory().appendingPathComponent(key + ".realm.management")
                 try FileManager.default.removeItem(at: realmManagement)
+                setSchemaVersion(0, databaseKey: key)
             }
             self.cleanUpAll()
         } catch {
@@ -89,11 +91,11 @@ struct RealmManager {
     }
     
     // MARK: - Private methods
-    private static func setContext(_ context: Realm?, databaseKey: String) {
-        realmContexts[databaseKey] = context
+    private func setContext(_ context: Realm?, databaseKey: String) {
+        realmContextCache[databaseKey] = context
     }
     
-    private static func validPassphrase(_ passphrase: String) -> Data? {
+    private func validPassphrase(_ passphrase: String) -> Data? {
         //Custom logic to force a 64 characters passphrase (required by Realm)
         var finalPassphrase = passphrase
         let keyLenght = 64
@@ -109,25 +111,25 @@ struct RealmManager {
         
         return keyData
     }
-
-    private static func getSchemaVersion(databaseKey: String) -> UInt64 {
+    
+    private func getSchemaVersion(databaseKey: String) -> UInt64 {
         if let persistedVersion = UserDefaults.standard.value(forKey: "\(databaseKey)\(schemaVersionKey)") as? NSNumber {
             return UInt64.init(truncating: persistedVersion)
         }
         return 0
     }
     
-    private static func setSchemaVersion(_ newSchemaVersion: UInt64, databaseKey: String) {
+    private func setSchemaVersion(_ newSchemaVersion: UInt64, databaseKey: String) {
         UserDefaults.standard.set(newSchemaVersion, forKey: "\(databaseKey)\(schemaVersionKey)")
     }
     
-    private static func currentStack(_ databaseKey: String) -> String {
+    private func currentStack(_ databaseKey: String) -> String {
         let onThread: String = Thread.isMainThread ? "*** MAIN THREAD ***" : "*** BACKGROUND THREAD ***"
-        var status: String = "---- Current Default Realm Stack: ----\n"
+        var status: String = "---- Current Realm Stack: ----\n"
         status += "Thread:                             \(onThread)\n"
-        status += "Default Context:                    \(String(describing: getRealm(databaseKey: databaseKey)))\n"
-        status += "Path:                               \(String(describing: getRealm(databaseKey: databaseKey)?.configuration.fileURL))\n"
-        if let schema = realmContexts[databaseKey]?.schema {
+        status += "Context:                             \(String(describing: getContext(databaseKey)))\n"
+        status += "Path:                               \(String(describing: getContext(databaseKey)?.configuration.fileURL))\n"
+        if let schema = realmContextCache[databaseKey]?.schema {
             status += "Schema description:            \(schema.description)\n"
         } else {
             status += "Schema description: none\n"

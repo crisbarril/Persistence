@@ -1,111 +1,89 @@
 //
-//  CoreDataAPI.swift
+//  CoreDataManager.swift
 //  PersistenceFramework
 //
-//  Created by Cristian on 13/03/2018.
+//  Created by Cristian on 10/05/2018.
 //  Copyright © 2018 Cristian Barril. All rights reserved.
 //
 
-import Foundation
 import CoreData
 
-/**
- Constructor for Core Data database.
- 
- - Important:
- This method **must** be called once, before attempting to use the database.
- 
- - parameters:
-    - databaseName: Name to identify the database in the bundle.
-    - bundle: The bundle of the database. Optional, default is _Bundle.main_.
-    - modelURL: Path URL to the data model.
- 
- - throws:
- NSError with the description of the problem.
- */
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManagerInit(databaseName: String, bundle: Bundle = Bundle.main, modelURL: URL) throws {
-    let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
-    do {
-        try CoreDataManager.initialize(databaseKey, bundle: bundle, modelURL: modelURL)
-    } catch {
-        throw error
+extension NSManagedObject: DatabaseObjectTypeProtocol {}
+
+public final class CoreDataAPI: DatabaseProtocol {
+    public typealias DatabaseObjectType = NSManagedObject
+    public typealias DatabaseContextType = NSManagedObjectContext
+    public let databaseConfiguration: DatabaseConfigurationProtocol
+    public let databaseContext: NSManagedObjectContext
+    
+    let coreDataInstance: CoreDataImplementation
+    
+    internal init(databaseConfiguration: DatabaseConfigurationProtocol, coreDataInstance: CoreDataImplementation) throws {
+        self.databaseConfiguration = databaseConfiguration
+        self.coreDataInstance = coreDataInstance
+        
+        guard let context = coreDataInstance.getContext(databaseConfiguration.databaseKey) else {
+            throw ErrorFactory.createError(withKey: "Recovering Context", failureReason: "Couldn't recover CoreData context for database with key: \(databaseConfiguration.databaseKey).", domain: "CoreDataAPI")
+        }
+        
+        self.databaseContext = context
+    }
+    
+    public func getContext() -> NSManagedObjectContext {
+        return databaseContext
+    }
+    
+    public func create<ReturnType>() -> ReturnType? where ReturnType : DatabaseObjectTypeProtocol {
+        let testEntityData = NSEntityDescription.insertNewObject(forEntityName: String(describing: ReturnType.self), into: databaseContext) as? ReturnType
+        return testEntityData
+    }
+    
+    public func recover<ReturnType>(key: String = "", value: String = "") -> [ReturnType]? where ReturnType : DatabaseObjectTypeProtocol {
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: ReturnType.self))
+        
+        if !key.isEmpty && !value.isEmpty {
+            let predicate = NSPredicate(format: "\(key) = '\(value)'")
+            fetch.predicate = predicate
+        }
+        
+        do {
+            let fetchedResult = try databaseContext.fetch(fetch)
+            
+            if let result = fetchedResult as? [ReturnType] {
+                return result
+            }
+            else {
+                return nil
+            }
+        } catch {
+            return nil
+        }
+    }
+    
+    public func delete(_ object: NSManagedObject) -> Bool {
+        databaseContext.delete(object)
+        return true
     }
 }
 
-/**
- Recover the specific context for the requested database.
- 
- - returns:
- Core Data context to use the database. Can be nil.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- */
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_getContext(databaseName: String, forBundle bundle: Bundle = Bundle.main) -> NSManagedObjectContext? {
-    let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
-    return CoreDataManager.getContext(databaseKey)
-}
-
-/**
- Save the context for the requested database.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- 
- - throws:
- NSError with the description of the problem.
- */
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_saveContext(databaseName: String, forBundle bundle: Bundle = Bundle.main) throws {
-    let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
-    try CoreDataManager.saveContext(databaseKey)
-}
-
-/**
- Remove the context instance generated in the constructor method for the requested database.
- 
- - Important:
- Use this method to avoid future uses of the database in the current life cycle of the app.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- */
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_cleanUp(databaseName: String, forBundle bundle: Bundle = Bundle.main) {
-    let databaseKey = DatabaseHelper.getDatabaseKey(databaseName: databaseName, bundle: bundle)
-    CoreDataManager.cleanUp(databaseKey)
-}
-
-/**
- Remove all context instances generated in the constructor method.
- 
- - Important:
- Use this method to avoid future uses of any Core Data database in the current life cycle of the app.
- */
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_cleanUpAll() {
-    CoreDataManager.cleanUpAll()
-}
-
-/**
- Delete all databases files from sandbox.
- 
- - Important:
- All databases will be **deleted**. This action cannot be undone.
- 
- - throws:
- NSError with the description of the problem.
- */
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_deleteAllCoreData() throws {
-    do {
-        try CoreDataManager.deleteAllCoreData()
-    } catch {
-        throw error
+extension CoreDataAPI: Saveable {
+    public func save() throws {
+        if (databaseContext.hasChanges) {
+            var saveError: NSError? = nil
+            databaseContext.perform {
+                do {
+                    try self.databaseContext.save()
+                    print("Async save DONE for database \(self.databaseConfiguration.databaseKey)")
+                } catch {
+                    saveError = error as NSError
+                    print("Unresolved error \(String(describing: saveError)), \(String(describing: saveError?.userInfo))")
+                }
+            }
+            if let error = saveError {
+                throw error
+            }
+        } else {
+            throw ErrorFactory.createError(withKey: "No context", failureReason: "There was an error in the initialization of the database.", domain: "CoreDataManager")
+        }
     }
 }
