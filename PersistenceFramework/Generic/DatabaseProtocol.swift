@@ -21,6 +21,10 @@ extension DatabaseConfigurationProtocol {
     }
 }
 
+public protocol DatabaseBuilderProtocol: DatabaseConfigurationProtocol {
+    func initialize<DatabaseTypeProtocol: DatabaseProtocol>() throws -> DatabaseTypeProtocol
+}
+
 public protocol DatabaseObjectTypeProtocol {
     //Used to validate DatabaseProtocol associatedtype in generics functions. Must extend the database entity object to conform this protocol
     init()

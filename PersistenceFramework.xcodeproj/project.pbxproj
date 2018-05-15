@@ -10,7 +10,6 @@
 		403079E920586ACF00B2D0C2 /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403079E820586ACF00B2D0C2 /* DatabaseHelper.swift */; };
 		403079EE205896FE00B2D0C2 /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 403079EC205896FE00B2D0C2 /* TestModel.xcdatamodeld */; };
 		40426FC4204F3B4B00720A53 /* Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40426FC2204F3B4B00720A53 /* Url.swift */; };
-		40877E1C20A4DCF4001EA579 /* DatabaseFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40877E1B20A4DCF4001EA579 /* DatabaseFactory.swift */; };
 		40877E1E20A4DDED001EA579 /* CoreDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40877E1D20A4DDED001EA579 /* CoreDataBuilder.swift */; };
 		40B2B57D20A88CDB00645BC2 /* RealmBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B2B57C20A88CDB00645BC2 /* RealmBuilder.swift */; };
 		40B2B57F20A891EA00645BC2 /* RealmAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B2B57E20A891EA00645BC2 /* RealmAPI.swift */; };
@@ -43,7 +42,6 @@
 		403079E820586ACF00B2D0C2 /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		403079ED205896FE00B2D0C2 /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
 		40426FC2204F3B4B00720A53 /* Url.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Url.swift; sourceTree = "<group>"; };
-		40877E1B20A4DCF4001EA579 /* DatabaseFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFactory.swift; sourceTree = "<group>"; };
 		40877E1D20A4DDED001EA579 /* CoreDataBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBuilder.swift; sourceTree = "<group>"; };
 		40B2B57C20A88CDB00645BC2 /* RealmBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmBuilder.swift; sourceTree = "<group>"; };
 		40B2B57E20A891EA00645BC2 /* RealmAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmAPI.swift; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 			isa = PBXGroup;
 			children = (
 				40FF46D120A4DEA600CA6426 /* DatabaseProtocol.swift */,
-				40877E1B20A4DCF4001EA579 /* DatabaseFactory.swift */,
 			);
 			path = Generic;
 			sourceTree = "<group>";
@@ -429,7 +426,6 @@
 				40877E1E20A4DDED001EA579 /* CoreDataBuilder.swift in Sources */,
 				40B2B57F20A891EA00645BC2 /* RealmAPI.swift in Sources */,
 				40426FC4204F3B4B00720A53 /* Url.swift in Sources */,
-				40877E1C20A4DCF4001EA579 /* DatabaseFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

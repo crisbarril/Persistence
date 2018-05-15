@@ -32,7 +32,7 @@ class RealmTests: XCTestCase {
         
         if !isMigrationInProgress {
             let databaseBuilder = RealmBuilder(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
-            databaseAPI = try! DatabaseFactory.initialize(databaseBuilder) as RealmAPI
+            databaseAPI = try! databaseBuilder.initialize() as RealmAPI
             databaseImplementation = databaseAPI.realmInstance as! RealmManager
         }
     }
@@ -55,7 +55,7 @@ class RealmTests: XCTestCase {
     
     func test_01_Initialize_02_Multi() {
         let databaseBuilder = RealmBuilder(databaseName: testDatabaseNameTwo, bundle: testBundle, passphrase: testDatabasePassphrase)
-        let databaseAPITwo = try! DatabaseFactory.initialize(databaseBuilder) as RealmAPI
+        let databaseAPITwo = try! databaseBuilder.initialize() as RealmAPI
         
         XCTAssertNotNil(databaseAPI)
         XCTAssertNotNil(databaseAPI.databaseContext)
@@ -70,7 +70,7 @@ class RealmTests: XCTestCase {
     
     func test_01_Initialize_03_Repeated() {
         let databaseBuilder = RealmBuilder(databaseName: testDatabaseName, bundle: testBundle, passphrase: testDatabasePassphrase)
-        let databaseAPITwo = try! DatabaseFactory.initialize(databaseBuilder) as RealmAPI
+        let databaseAPITwo = try! databaseBuilder.initialize() as RealmAPI
         
         XCTAssertNotNil(databaseAPITwo)
         XCTAssertNotNil(databaseAPITwo.databaseContext)
@@ -79,7 +79,7 @@ class RealmTests: XCTestCase {
     
     func test_01_Initialize_04_KO() {
         let databaseBuilderWrong = RealmBuilder(databaseName: testDatabaseNameTwo, bundle: testBundle, passphrase: "")
-        XCTAssertThrowsError(try DatabaseFactory.initialize(databaseBuilderWrong) as RealmAPI)
+        XCTAssertThrowsError(try databaseBuilderWrong.initialize() as RealmAPI)
     }
 
     func test_02_ModelObject_01_Create() {
@@ -172,7 +172,7 @@ class RealmTests: XCTestCase {
             }
         })
         
-        let databaseAPI = try! DatabaseFactory.initialize(databaseBuilder) as RealmAPI
+        let databaseAPI = try! databaseBuilder.initialize() as RealmAPI
         XCTAssertNotNil(databaseAPI)
         XCTAssertNotNil(databaseAPI.databaseContext)
         XCTAssertNotNil(databaseAPI.realmInstance)

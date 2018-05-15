@@ -16,7 +16,6 @@ protocol RealmBuilderProtocol: DatabaseBuilderProtocol {
 }
 
 public struct RealmBuilder: RealmBuilderProtocol {
-    public let databaseType: DatabaseType = .Realm
     public let databaseName: String
     public let bundle: Bundle
     public let passphrase: String
@@ -29,5 +28,19 @@ public struct RealmBuilder: RealmBuilderProtocol {
         self.passphrase = passphrase
         self.schemaVersion = schemaVersion
         self.migrationBlock = migrationBlock
+    }
+    
+    public func initialize<DatabaseTypeProtocol>() throws -> DatabaseTypeProtocol where DatabaseTypeProtocol : DatabaseProtocol {
+        do {
+            try RealmManager.sharedInstance.initialize(self)
+            let realmAPI = try RealmAPI(databaseConfiguration: self, realmInstance: RealmManager.sharedInstance)
+            if let result = realmAPI as? DatabaseTypeProtocol {
+                return result
+            } else {
+                throw ErrorFactory.createError(withKey: "Builder fail", failureReason: "Error creating Realm managet", domain: "DatabaseFactory")
+            }
+        } catch{
+            throw error
+        }
     }
 }

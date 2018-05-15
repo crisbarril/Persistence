@@ -24,7 +24,7 @@ class CoreDataTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         testModelURL = testBundle.url(forResource: "TestModel", withExtension:"momd")
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseName, bundle: testBundle, modelURL: testModelURL)
-        databaseAPI = try! DatabaseFactory.initialize(databaseBuilder) as CoreDataAPI
+        databaseAPI = try! databaseBuilder.initialize() as CoreDataAPI
         databaseImplementation = databaseAPI.coreDataInstance as! CoreDataManager
     }
     
@@ -43,7 +43,7 @@ class CoreDataTests: XCTestCase {
     
     func test_01_Initialize_02_Multi() {
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseNameTwo, bundle: testBundle, modelURL: testModelURL)
-        let databaseAPITwo = try! DatabaseFactory.initialize(databaseBuilder) as CoreDataAPI
+        let databaseAPITwo = try! databaseBuilder.initialize() as CoreDataAPI
         
         XCTAssertNotNil(databaseAPI)
         XCTAssertNotNil(databaseAPI.databaseContext)
@@ -58,7 +58,7 @@ class CoreDataTests: XCTestCase {
 
     func test_01_Initialize_03_Repeated() {
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseName, bundle: testBundle, modelURL: testModelURL)
-        let databaseAPITwo = try! DatabaseFactory.initialize(databaseBuilder) as CoreDataAPI
+        let databaseAPITwo = try! databaseBuilder.initialize() as CoreDataAPI
         
         XCTAssertNotNil(databaseAPITwo)
         XCTAssertNotNil(databaseAPITwo.databaseContext)
@@ -68,7 +68,7 @@ class CoreDataTests: XCTestCase {
     func test_01_Initialize_04_KO() {
         let testModelURLWrong = DatabaseHelper.getStoreUrl("TestModelWrong.momd")
         let databaseBuilderWrong = CoreDataBuilder(databaseName: testDatabaseNameTwo, bundle: testBundle, modelURL: testModelURLWrong)
-        XCTAssertThrowsError(try DatabaseFactory.initialize(databaseBuilderWrong) as CoreDataAPI)
+        XCTAssertThrowsError(try databaseBuilderWrong.initialize() as CoreDataAPI)
     }
     
     func test_02_ModelObject_01_Create() {
