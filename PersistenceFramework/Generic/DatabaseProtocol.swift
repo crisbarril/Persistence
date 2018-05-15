@@ -10,15 +10,6 @@ import Foundation
 
 public protocol DatabaseConfigurationProtocol {
     var databaseName: String { get }
-    var bundle: Bundle { get }
-}
-
-extension DatabaseConfigurationProtocol {
-    var databaseKey: String {
-        get {
-            return "\(self.bundle).\(self.databaseName)"
-        }
-    }
 }
 
 public protocol DatabaseBuilderProtocol: DatabaseConfigurationProtocol {

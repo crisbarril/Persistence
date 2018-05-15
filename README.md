@@ -2,22 +2,44 @@
 - [PersistenceFramework](#persistenceframework)
 - [Supported databases](#supported-databases)
 - [Installation](#installation)
-  * [All databases](#all-databases)
-  * [Only Core Data database](#only-core-data-database)
-  * [Only Realm database](#only-realm-database)
-- [API](#api)
-  * [Core Data](#core-data)
-  * [Realm](#realm)
+    + [All databases](#all-databases)
+    + [Only Core Data database](#only-core-data-database)
+    + [Only Realm database](#only-realm-database)
+- [How to use](#how-to-use)
+  * [Protocols](#protocols)
+    + [DatabaseProtocol](#databaseprotocol)
+    + [Updatable Protocol](#updatable-protocol)
+    + [Saveable Protocol](#saveable-protocol)
+  * [Builders](#builders)
+    + [Core Data Builder](#core-data-builder)
+    + [Realm Builder](#realm-builder)
+  * [Use](#use)
+    + [Common](#common)
+      - [Creation](#creation)
+      - [Recover](#recover)
+      - [Delete](#delete)
+    + [Core Data](#core-data)
+      - [Save](#save)
+    + [Realm](#realm)
+      - [Update](#update)
+    + [Custom Code](#custom-code)
 - [Migrations](#migrations)
   * [Core Data](#core-data-1)
   * [Realm](#realm-1)
 
+  
 # PersistenceFramework
-Framework to encapsulate persistence logic.
+Framework to encapsulate persistence logic using Protocol Oriented Programming. This is an EXAMPLE framework to show how to use:
+
+- Cocopods
+- Protocol Oriented Programming
+- Dependency injection
+- Unit Testing
 
 # Supported databases
-* Core Data
-* Realm
+
+- Core Data
+- Realm
 
 # Installation
 Using Cocoapods, add in your Podfile:
@@ -37,160 +59,173 @@ pod 'PersistenceFramework/CoreData'
 pod 'PersistenceFramework/Realm'
 ```
 
-# API
-## Core Data
+# How to use
+To use this framework, you have to know just a few commons protocols that will be implemented for every database. This makes easy to change from one to another.
 
-> Constructor for Core Data database.
+## Protocols
+
+### DatabaseProtocol
+
+This is the base protocol that any database must implement. The idea is to provide with the most used functionalities that a database should offer. For any other use, you can recover the database context an implement your custom code.
 
 ```swift
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManagerInit(databaseName: String, bundle: Bundle = Bundle.main, modelURL: URL)
+public protocol DatabaseProtocol {
+	...
+    func create<ReturnType: DatabaseObjectTypeProtocol>() -> ReturnType?
+    func recover<ReturnType: DatabaseObjectTypeProtocol>(key: String, value: String) -> [ReturnType]?
+    func delete(_ object: DatabaseObjectType) -> Bool
+    func getContext() -> DatabaseContextType
+}
 ```
- 
- - Important:
- This method **must** be called once, before attempting to use the database.
- 
- - parameters:
-    - databaseName: Name to identify the database in the bundle.
-    - bundle: The bundle of the database. Optional, default is _Bundle.main_.
-    - modelURL: Path URL to the data model.
- 
- - throws:
- NSError with the description of the problem.
- 
----
-> Recover the specific context for the requested database.
- 
+
+### Updatable Protocol
+
+Optional protocol used in Realm.
+
 ```swift
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_getContext(databaseName: String, forBundle bundle: Bundle = Bundle.main) -> NSManagedObjectContext? 
+public protocol Updatable: DatabaseProtocol {
+    func update<T: DatabaseObjectTypeProtocol>(_ object: T) -> Bool
+}
 ```
- - returns:
- Core Data context to use the database. Can be nil.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- 
 
----
-> Save the context for the requested database.
+### Saveable Protocol
+
+Optional protocol used in Core Data.
 
 ```swift
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_saveContext(databaseName: String, forBundle bundle: Bundle = Bundle.main) throws
+public protocol Saveable: DatabaseProtocol {
+    func save() throws
+}
 ```
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- 
- - throws:
- NSError with the description of the problem.
 
----
-> Remove the context instance generated in the constructor method for the requested database.
+**REMEMBER:** This is just an example. Feel free to fork this repo and make your own framework.
 
-```swift
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_cleanUp(databaseName: String, forBundle bundle: Bundle = Bundle.main)
-``` 
- - Important:
- Use this method to avoid future uses of the database in the current life cycle of the app.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- 
----
-> Remove all context instances generated in the constructor method.
+## Builders
+
+To create or recover a database, you have to use the **DatabaseBuilder** struct specific for the desired database. This struct required to be initialized with all the vital information for each case (Core Data need some differents things than Realm)
+
+### Core Data Builder
+
+Instantiate this struct to create a Core Data database. You can have as many as you want, in any bundle that you need. Just be sure to use a different "name" if they are in the same bundle.
+
+The information you need to provide is:
+
+- databaseName: String parameter with the name of the database.
+- bundle: Bundle where the NSManagedObjectModel file is located, needed in case of a migration.
+- modelURL: URL with the path to the NSManagedObjectModel file.
 
 ```swift
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_cleanUpAll()
+public struct CoreDataBuilder: CoreDataBuilderProtocol {
+    public let databaseName: String
+    public let bundle: Bundle
+    public let modelURL: URL
+    
+    public func initialize<DatabaseTypeProtocol>() throws -> DatabaseTypeProtocol where DatabaseTypeProtocol : DatabaseProtocol {
+        ...
+    }
+}
 ```
- - Important:
- Use this method to avoid future uses of any Core Data database in the current life cycle of the app.
- 
----
-> Delete all databases files from sandbox.
+
+Use example:
 
 ```swift
-@available(iOS, message: "This function is only available for iOS.")
-public func CoreDataManager_deleteAllCoreData() throws
+let modelURL = Bundle.main.url(forResource: "Model", withExtension:"momd")
+let databaseBuilder = CoreDataBuilder(databaseName: "CoreDataDatabaseName", bundle: Bundle.main, modelURL: modelURL)
+let databaseAPI = try? databaseBuilder.initialize() as CoreDataAPI
 ```
- - Important:
- All databases will be **deleted**. This action cannot be undone.
- 
- - throws:
- NSError with the description of the problem.
- 
 
-## Realm
 
-> Constructor for Realm database.
+### Realm Builder
 
-```swift
-public func RealmManagerInit(databaseName: String, bundle: Bundle, passphrase: String, schemaVersion: UInt64 = 0, migrationBlock: MigrationBlock? = nil) throws 
-``` 
- - Important:
- This method **must** be called once, before attempting to use the database.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
-     - passphrase: Passphrase to encrypt the database. Cannot be an empty String.
-     - schemaVersion: Current schema version. Optional, default is 0.
-     - migrationBlock: Closure with the logic to migrate the model. Optional, default is _nil_.
- 
- - throws:
- NSError with the description of the problem.
+Instantiate this struct to create a Realm database. You can have as many as you want, in any bundle that you need. Just be sure to use a different "name" if they are in the same bundle.
 
----
-> Recover the specific context for the requested database.
+The information you need to provide is:
+
+- databaseName: String parameter with the name of the database.
+- passphrase: String with the key to encrypt the database. Cannot be an empty String.
+- schemaVersion: UInt64 with the current number of version. Default value is 0. (Optional parameter)
+- migrationBlock: MigrationBlock needed when the model is changed. Default is nil. (Optional parameter)
 
 ```swift
-public func RealmManager_getRealm(databaseName: String, forBundle bundle: Bundle) -> Realm?
+public struct RealmBuilder: RealmBuilderProtocol {
+    public let databaseName: String
+    public let passphrase: String
+    public let schemaVersion: UInt64
+    public let migrationBlock: MigrationBlock?
+        
+    public func initialize<DatabaseTypeProtocol>() throws -> DatabaseTypeProtocol where DatabaseTypeProtocol : DatabaseProtocol {
+    	...
+    }
+}
 ```
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- 
- - returns:
- Realm object to use the database. Can be nil.
- 
----
-> Remove the context instance generated in the constructor method for the requested database.
+
+Use example:
 
 ```swift
-public func RealmManager_cleanUp(databaseName: String, forBundle bundle: Bundle) 
-``` 
- - Important:
- Use this method to avoid future uses of the database in the current life cycle of the app.
- 
- - parameters:
-     - databaseName: Name to identify the database in the bundle.
-     - bundle: The bundle of the database. Optional, default is _Bundle.main_.
- 
----
-> Remove all context instances generated in the constructor method.
-
-```swift
-public func RealmManager_cleanUpAll()
-``` 
- - Important:
- Use this method to avoid future uses of any Core Data database in the current life cycle of the app.
- 
----
-> Delete all databases files from sandbox.
-
-```swift
-public func RealmManager_deleteAllRealm() throws
+let databaseBuilder = RealmBuilder(databaseName: "RealmDatabaseName", passphrase: "Passphrase")
+let databaseAPI = try? databaseBuilder.initialize() as RealmAPI
 ```
- - Important:
- All databases will be **deleted**. This action cannot be undone.
- 
- - throws:
- NSError with the description of the problem.
+
+**REMEMBER:** This is just an example. Feel free to fork this repo and make your own framework.
+
+## Use
+
+### Common
+
+#### Creation
+
+Example to create a new _User_ entity:
+
+```swift
+let newObject: User? = databaseAPI.create()
+```
+
+#### Recover
+
+Example to recover all _User_ entities:
+
+```swift
+let recoveredObjects: [User]? = databaseAPI.recover()
+```
+
+Example to recover a specific _User_ entity:
+
+```swift
+let recoveredObjects: [User]? = databaseAPI.recover(key: "id", value: objectId)
+```
+
+#### Delete
+
+Example to delete a specific _User_ entity:
+
+```swift
+let result = databaseAPI.delete(objectToDelete)
+```
+
+### Core Data
+
+#### Save
+Custom Core Data method to save the context:
+
+```swift
+try? databaseAPI.save()
+```
+
+### Realm
+
+#### Update
+Custom Realm method to update a specific _User_ entity:
+
+```swift
+let result = databaseAPI.update(newObject)
+```
+
+### Custom Code
+
+To make any other use of the databases, you can recover the context to use it:
+```swift
+let context = databaseAPI.getContext()
+```
 
 # Migrations
 ## Core Data
@@ -201,7 +236,7 @@ public func RealmManager_deleteAllRealm() throws
 When the model changes, you have to follow the next steps:
 
 * Raise the schema version
-* Create the migration block. You can see some examples below:
+* Create the migration block in the Builder struct. You can see some examples below:
 
 ```swift
 migrationBlock: { migration, oldSchemaVersion in

@@ -17,14 +17,12 @@ protocol RealmBuilderProtocol: DatabaseBuilderProtocol {
 
 public struct RealmBuilder: RealmBuilderProtocol {
     public let databaseName: String
-    public let bundle: Bundle
     public let passphrase: String
     public let schemaVersion: UInt64
     public let migrationBlock: MigrationBlock?
     
-    init(databaseName: String, bundle: Bundle, passphrase: String, schemaVersion: UInt64 = 0, migrationBlock: MigrationBlock? = nil) {
+    init(databaseName: String, passphrase: String, schemaVersion: UInt64 = 0, migrationBlock: MigrationBlock? = nil) {
         self.databaseName = databaseName
-        self.bundle = bundle
         self.passphrase = passphrase
         self.schemaVersion = schemaVersion
         self.migrationBlock = migrationBlock

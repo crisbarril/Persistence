@@ -9,6 +9,7 @@
 import Foundation
 
 protocol CoreDataBuilderProtocol: DatabaseBuilderProtocol {
+    var bundle: Bundle { get }
     var modelURL: URL { get }
 }
 

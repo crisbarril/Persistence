@@ -13,7 +13,7 @@ protocol RealmImplementation {
     var realmContextCache: [String: Realm] { get }
     
     func initialize(_ builder: RealmBuilder) throws
-    func getContext(_ databaseKey: String) -> Realm?
+    func getContext(_ databaseName: String) -> Realm?
 }
 
 final class RealmManager: RealmImplementation {
@@ -25,8 +25,8 @@ final class RealmManager: RealmImplementation {
     private let schemaVersionKey = "schemaVersionKey"
     
     func initialize(_ builder: RealmBuilder) throws {
-        guard realmContextCache[builder.databaseKey] == nil else {
-            print("Already initialized Realm database for key: \(builder.databaseKey).")
+        guard realmContextCache[builder.databaseName] == nil else {
+            print("Already initialized Realm database for key: \(builder.databaseName).")
             return
         }
         
@@ -34,12 +34,12 @@ final class RealmManager: RealmImplementation {
             throw ErrorFactory.createError(withKey: "Error passphrase", failureReason: "Error recovering passphrase from builder: \(builder)", domain: "RealmManager")
         }
         
-        var persistedSchemaVersion = getSchemaVersion(databaseKey: builder.databaseKey)
+        var persistedSchemaVersion = getSchemaVersion(databaseName: builder.databaseName)
         if builder.schemaVersion > persistedSchemaVersion {
             persistedSchemaVersion = builder.schemaVersion
         }
         
-        let url = URL.applicationDocumentsDirectory().appendingPathComponent(builder.databaseKey + ".realm")
+        let url = URL.applicationDocumentsDirectory().appendingPathComponent(builder.databaseName + ".realm")
         let config = Realm.Configuration(
             fileURL: url,
             encryptionKey: keyData,
@@ -49,19 +49,19 @@ final class RealmManager: RealmImplementation {
         
         do {
             let realm = try Realm(configuration: config)
-            setContext(realm, databaseKey: builder.databaseKey)
-            setSchemaVersion(persistedSchemaVersion, databaseKey: builder.databaseKey)
-            print("All Realm settings for database \(builder.databaseKey) done!\n \(currentStack(builder.databaseKey))")
+            setContext(realm, databaseName: builder.databaseName)
+            setSchemaVersion(persistedSchemaVersion, databaseName: builder.databaseName)
+            print("All Realm settings for database \(builder.databaseName) done!\n \(currentStack(builder.databaseName))")
         } catch {
             let nserror = error as NSError
-            print("RealmManager - \(#function): Unresolved error for \(builder.databaseKey): \(nserror), \(nserror.userInfo)")
+            print("RealmManager - \(#function): Unresolved error for \(builder.databaseName): \(nserror), \(nserror.userInfo)")
             
             throw nserror
         }
     }
     
-    func getContext(_ databaseKey: String) -> Realm? {
-        return realmContextCache[databaseKey]
+    func getContext(_ databaseName: String) -> Realm? {
+        return realmContextCache[databaseName]
     }
     
     internal func cleanUpAll() {
@@ -81,7 +81,7 @@ final class RealmManager: RealmImplementation {
                 try FileManager.default.removeItem(at: realmFileLock)
                 let realmManagement = URL.applicationDocumentsDirectory().appendingPathComponent(key + ".realm.management")
                 try FileManager.default.removeItem(at: realmManagement)
-                setSchemaVersion(0, databaseKey: key)
+                setSchemaVersion(0, databaseName: key)
             }
             self.cleanUpAll()
         } catch {
@@ -91,8 +91,8 @@ final class RealmManager: RealmImplementation {
     }
     
     // MARK: - Private methods
-    private func setContext(_ context: Realm?, databaseKey: String) {
-        realmContextCache[databaseKey] = context
+    private func setContext(_ context: Realm?, databaseName: String) {
+        realmContextCache[databaseName] = context
     }
     
     private func validPassphrase(_ passphrase: String) -> Data? {
@@ -112,24 +112,24 @@ final class RealmManager: RealmImplementation {
         return keyData
     }
     
-    private func getSchemaVersion(databaseKey: String) -> UInt64 {
-        if let persistedVersion = UserDefaults.standard.value(forKey: "\(databaseKey)\(schemaVersionKey)") as? NSNumber {
+    private func getSchemaVersion(databaseName: String) -> UInt64 {
+        if let persistedVersion = UserDefaults.standard.value(forKey: "\(databaseName)\(schemaVersionKey)") as? NSNumber {
             return UInt64.init(truncating: persistedVersion)
         }
         return 0
     }
     
-    private func setSchemaVersion(_ newSchemaVersion: UInt64, databaseKey: String) {
-        UserDefaults.standard.set(newSchemaVersion, forKey: "\(databaseKey)\(schemaVersionKey)")
+    private func setSchemaVersion(_ newSchemaVersion: UInt64, databaseName: String) {
+        UserDefaults.standard.set(newSchemaVersion, forKey: "\(databaseName)\(schemaVersionKey)")
     }
     
-    private func currentStack(_ databaseKey: String) -> String {
+    private func currentStack(_ databaseName: String) -> String {
         let onThread: String = Thread.isMainThread ? "*** MAIN THREAD ***" : "*** BACKGROUND THREAD ***"
         var status: String = "---- Current Realm Stack: ----\n"
         status += "Thread:                             \(onThread)\n"
-        status += "Context:                             \(String(describing: getContext(databaseKey)))\n"
-        status += "Path:                               \(String(describing: getContext(databaseKey)?.configuration.fileURL))\n"
-        if let schema = realmContextCache[databaseKey]?.schema {
+        status += "Context:                             \(String(describing: getContext(databaseName)))\n"
+        status += "Path:                               \(String(describing: getContext(databaseName)?.configuration.fileURL))\n"
+        if let schema = realmContextCache[databaseName]?.schema {
             status += "Schema description:            \(schema.description)\n"
         } else {
             status += "Schema description: none\n"

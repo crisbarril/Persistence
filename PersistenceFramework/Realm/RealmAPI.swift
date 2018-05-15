@@ -22,8 +22,8 @@ public final class RealmAPI: DatabaseProtocol {
         self.databaseConfiguration = databaseConfiguration
         self.realmInstance = realmInstance
         
-        guard let context = realmInstance.getContext(databaseConfiguration.databaseKey) else {
-            throw ErrorFactory.createError(withKey: "Recovering Context", failureReason: "Couldn't recover Realm context for database with key: \(databaseConfiguration.databaseKey).", domain: "RealmAPI")
+        guard let context = realmInstance.getContext(databaseConfiguration.databaseName) else {
+            throw ErrorFactory.createError(withKey: "Recovering Context", failureReason: "Couldn't recover Realm context for database with key: \(databaseConfiguration.databaseName).", domain: "RealmAPI")
         }
         
         self.databaseContext = context

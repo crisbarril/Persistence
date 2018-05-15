@@ -14,7 +14,7 @@ protocol CoreDataImplementation {
     var managedObjectContextCache: [String: NSManagedObjectContext] { get }
     
     func initialize(_ builder: CoreDataBuilder) throws
-    func getContext(_ databaseKey: String) -> NSManagedObjectContext?
+    func getContext(_ databaseName: String) -> NSManagedObjectContext?
 }
 
 final class CoreDataManager: CoreDataImplementation {
@@ -29,8 +29,8 @@ final class CoreDataManager: CoreDataImplementation {
     }
     
     func initialize(_ builder: CoreDataBuilder) throws {
-        guard managedObjectContextCache[builder.databaseKey] == nil else {
-            print("Already initialized CoreData database for key: \(builder.databaseKey).")
+        guard managedObjectContextCache[builder.databaseName] == nil else {
+            print("Already initialized CoreData database for key: \(builder.databaseName).")
             return
         }
         
@@ -38,27 +38,27 @@ final class CoreDataManager: CoreDataImplementation {
             throw ErrorFactory.createError(withKey: "Error initializing NSManagedObjectModel", failureReason: "Error initializing NSManagedObjectModel from URL: \(builder.modelURL)", domain: "CoreDataManager")
         }
         
-        let isMigrationNedeed = isMigrationNeeded(builder.databaseKey, managedObjectModel: managedObjectModel)
+        let isMigrationNedeed = isMigrationNeeded(builder.databaseName, managedObjectModel: managedObjectModel)
         if isMigrationNedeed {
             do {
-                try migrate(builder.databaseKey, bundle: builder.bundle, currentManagedObjectModel: managedObjectModel)
+                try migrate(builder.databaseName, bundle: builder.bundle, currentManagedObjectModel: managedObjectModel)
             } catch {
-                throw ErrorFactory.createError(withKey: "Migration", failureReason: "Fail to migrate database \(builder.databaseKey) with error: \(error)", domain: "CoreDataManager")
+                throw ErrorFactory.createError(withKey: "Migration", failureReason: "Fail to migrate database \(builder.databaseName) with error: \(error)", domain: "CoreDataManager")
             }
         }
         
         do {
-            if let container = try loadPersistentContainer(builder.databaseKey, managedObjectModel: managedObjectModel) {
-                setContext(container.viewContext, forDatabase: builder.databaseKey)
-                print("All CoreData settings for database \(builder.databaseKey) done!\n \(currentStack(builder.databaseKey, managedObjectModel: managedObjectModel, container: container))")
+            if let container = try loadPersistentContainer(builder.databaseName, managedObjectModel: managedObjectModel) {
+                setContext(container.viewContext, forDatabase: builder.databaseName)
+                print("All CoreData settings for database \(builder.databaseName) done!\n \(currentStack(builder.databaseName, managedObjectModel: managedObjectModel, container: container))")
             }
         } catch  {
             throw error
         }
     }
     
-    internal func getContext(_ databaseKey: String) -> NSManagedObjectContext? {
-        return managedObjectContextCache[databaseKey]
+    internal func getContext(_ databaseName: String) -> NSManagedObjectContext? {
+        return managedObjectContextCache[databaseName]
     }
     
     internal func cleanUpAll() {
@@ -79,13 +79,13 @@ final class CoreDataManager: CoreDataImplementation {
     }
     
     // MARK: - privates methods
-    private func setContext(_ defaultContext: NSManagedObjectContext?, forDatabase databaseKey: String ) {
-        managedObjectContextCache[databaseKey] = defaultContext
+    private func setContext(_ defaultContext: NSManagedObjectContext?, forDatabase databaseName: String ) {
+        managedObjectContextCache[databaseName] = defaultContext
     }
     
-    private func loadPersistentContainer(_ databaseKey: String, managedObjectModel: NSManagedObjectModel) throws -> NSPersistentContainer? {
-        let container = NSPersistentContainer(name: databaseKey, managedObjectModel: managedObjectModel)
-        let url = DatabaseHelper.getStoreUrl(databaseKey)
+    private func loadPersistentContainer(_ databaseName: String, managedObjectModel: NSManagedObjectModel) throws -> NSPersistentContainer? {
+        let container = NSPersistentContainer(name: databaseName, managedObjectModel: managedObjectModel)
+        let url = DatabaseHelper.getStoreUrl(databaseName)
         
         // Create Persistent Store Description
         let persistentStoreDescription = NSPersistentStoreDescription(url: url)
@@ -121,29 +121,29 @@ final class CoreDataManager: CoreDataImplementation {
         return container
     }
     
-    private func currentStack(_ databaseKey: String, managedObjectModel: NSManagedObjectModel, container: NSPersistentContainer) -> String {
+    private func currentStack(_ databaseName: String, managedObjectModel: NSManagedObjectModel, container: NSPersistentContainer) -> String {
         let onThread: String = Thread.isMainThread ? "*** MAIN THREAD ***" : "*** BACKGROUND THREAD ***"
         var status: String = "---- Current Core Data Stack: ----\n"
         status += "Thread:                             \(onThread)\n"
-        status += "Context:                             \(String(describing: getContext(databaseKey)))\n"
+        status += "Context:                             \(String(describing: getContext(databaseName)))\n"
         status += "Models (versionIdentifiers):        \(String(describing: managedObjectModel.versionIdentifiers.first?.description))\n"
         status += "Models (entityVersionHashesByName): \(String(describing: managedObjectModel.entityVersionHashesByName))\n"
         for entity in managedObjectModel.entities {
             status += "Models (Entity version):            \(entity.name!) - \(String(describing: entity.versionHashModifier))\n"
         }
         status += "PersistentContainer:       \(String(describing: container))\n"
-        status += "Database Name:                     \(databaseKey)"
+        status += "Database Name:                     \(databaseName)"
         
         return status
     }
     
     // MARK: - migration privates methods
-    private func isMigrationNeeded(_ databaseKey: String, managedObjectModel: NSManagedObjectModel) -> Bool {
+    private func isMigrationNeeded(_ databaseName: String, managedObjectModel: NSManagedObjectModel) -> Bool {
         
-        let storeUrl = DatabaseHelper.getStoreUrl(databaseKey)
+        let storeUrl = DatabaseHelper.getStoreUrl(databaseName)
         
         guard FileManager.default.fileExists(atPath: storeUrl.path) else {
-            print("Doesn't exist store with key: \(databaseKey). New database.")
+            print("Doesn't exist store with key: \(databaseName). New database.")
             return false
         }
         
@@ -158,9 +158,9 @@ final class CoreDataManager: CoreDataImplementation {
         }
     }
     
-    private func migrate(_ databaseKey: String, bundle: Bundle, currentManagedObjectModel: NSManagedObjectModel) throws {
+    private func migrate(_ databaseName: String, bundle: Bundle, currentManagedObjectModel: NSManagedObjectModel) throws {
         
-        let storeUrl = DatabaseHelper.getStoreUrl(databaseKey)
+        let storeUrl = DatabaseHelper.getStoreUrl(databaseName)
         
         guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeUrl, options: nil) else {
             print("FAILED to recover store metadata.")
@@ -187,7 +187,7 @@ final class CoreDataManager: CoreDataImplementation {
             throw ErrorFactory.createError(withKey: "Generating mapping model", failureReason: "Fail to generate mapping model from bundle: \(bundle).", domain: "CoreDataManager")
         }
         
-        let destinationUrl = URL.applicationDocumentsDirectory().appendingPathComponent("\(databaseKey)_2")
+        let destinationUrl = URL.applicationDocumentsDirectory().appendingPathComponent("\(databaseName)_2")
         
         do {
             try migrationManager.migrateStore(from: storeUrl, sourceType: NSSQLiteStoreType, options: nil, with: mappingModel, toDestinationURL: destinationUrl, destinationType: NSSQLiteStoreType, destinationOptions: nil)

@@ -22,8 +22,8 @@ public final class CoreDataAPI: DatabaseProtocol {
         self.databaseConfiguration = databaseConfiguration
         self.coreDataInstance = coreDataInstance
         
-        guard let context = coreDataInstance.getContext(databaseConfiguration.databaseKey) else {
-            throw ErrorFactory.createError(withKey: "Recovering Context", failureReason: "Couldn't recover CoreData context for database with key: \(databaseConfiguration.databaseKey).", domain: "CoreDataAPI")
+        guard let context = coreDataInstance.getContext(databaseConfiguration.databaseName) else {
+            throw ErrorFactory.createError(withKey: "Recovering Context", failureReason: "Couldn't recover CoreData context for database with key: \(databaseConfiguration.databaseName).", domain: "CoreDataAPI")
         }
         
         self.databaseContext = context
@@ -73,7 +73,7 @@ extension CoreDataAPI: Saveable {
             databaseContext.perform {
                 do {
                     try self.databaseContext.save()
-                    print("Async save DONE for database \(self.databaseConfiguration.databaseKey)")
+                    print("Async save DONE for database \(self.databaseConfiguration.databaseName)")
                 } catch {
                     saveError = error as NSError
                     print("Unresolved error \(String(describing: saveError)), \(String(describing: saveError?.userInfo))")

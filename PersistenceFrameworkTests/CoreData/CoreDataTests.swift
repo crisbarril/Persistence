@@ -129,6 +129,10 @@ class CoreDataTests: XCTestCase {
         XCTAssertEqual(newRecoveredObjects!.count, 1, "Should have only one object")
     }
 
+    func test_05_RecoverContext() {
+        XCTAssertNotNil(databaseAPI.getContext())
+    }
+    
     func test_99_Performance() {
         self.measure {
             self.test_01_Initialize_01_Single()
