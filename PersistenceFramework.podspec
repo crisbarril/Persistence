@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "PersistenceFramework"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "Persistence Framework"
   s.description  = "Framework to encapsulate persistence logic"
   s.homepage     = "https://github.com/crisbarril/PersistenceFramework"
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Core' do |ss|
-    ss.source_files  = "PersistenceFramework/Commons/**/*.swift"
+    ss.source_files  = "PersistenceFramework/Generic/**/*.swift", "PersistenceFramework/Helper/**/*.swift"
   end
 
   s.subspec 'CoreData' do |ss|
