@@ -17,7 +17,7 @@ class RealmTests: XCTestCase {
     private let testDatabaseNameMigration = "testDatabaseNameMigration"
     private let testDatabasePassphrase = "passphrase"
     private let lastSchemaVersion: UInt64 = 0
-    private var databaseAPI: RealmAPI!
+    private var database: RealmAPI!
     private var databaseImplementation: RealmManager!
     private var isMigrationInProgress: Bool {
         get {
@@ -31,8 +31,8 @@ class RealmTests: XCTestCase {
         
         if !isMigrationInProgress {
             let databaseBuilder = RealmBuilder(databaseName: testDatabaseName, passphrase: testDatabasePassphrase)
-            databaseAPI = try! databaseBuilder.initialize() as RealmAPI
-            databaseImplementation = databaseAPI.realmInstance as! RealmManager
+            database = try! databaseBuilder.initialize() as RealmAPI
+            databaseImplementation = database.realmInstance as! RealmManager
         }
     }
 
@@ -47,8 +47,8 @@ class RealmTests: XCTestCase {
     }
 
     func test_01_Initialize_01_Single() {
-        XCTAssertNotNil(databaseAPI)
-        XCTAssertNotNil(databaseAPI.databaseContext)
+        XCTAssertNotNil(database)
+        XCTAssertNotNil(database.databaseContext)
         XCTAssertNotNil(databaseImplementation)
     }
     
@@ -56,15 +56,15 @@ class RealmTests: XCTestCase {
         let databaseBuilder = RealmBuilder(databaseName: testDatabaseNameTwo, passphrase: testDatabasePassphrase)
         let databaseAPITwo = try! databaseBuilder.initialize() as RealmAPI
         
-        XCTAssertNotNil(databaseAPI)
-        XCTAssertNotNil(databaseAPI.databaseContext)
+        XCTAssertNotNil(database)
+        XCTAssertNotNil(database.databaseContext)
         XCTAssertNotNil(databaseImplementation)
         
         XCTAssertNotNil(databaseAPITwo)
         XCTAssertNotNil(databaseAPITwo.databaseContext)
         XCTAssertNotNil(databaseAPITwo.realmInstance)
         
-        XCTAssertNotEqual(databaseAPITwo.databaseContext, databaseAPI.databaseContext, "Context are equals")
+        XCTAssertNotEqual(databaseAPITwo.databaseContext, database.databaseContext, "Context are equals")
     }
     
     func test_01_Initialize_03_Repeated() {
@@ -73,7 +73,7 @@ class RealmTests: XCTestCase {
         
         XCTAssertNotNil(databaseAPITwo)
         XCTAssertNotNil(databaseAPITwo.databaseContext)
-        XCTAssertEqual(databaseAPITwo.databaseContext, databaseAPI.databaseContext, "Context aren't equals")
+        XCTAssertEqual(databaseAPITwo.databaseContext, database.databaseContext, "Context aren't equals")
     }
     
     func test_01_Initialize_04_KO() {
@@ -82,71 +82,71 @@ class RealmTests: XCTestCase {
     }
 
     func test_02_ModelObject_01_Create() {
-        let newObject: User? = databaseAPI.create()
+        let newObject: User? = database.create()
         XCTAssertNotNil(newObject, "Fail to create User object")
     }
     
     func test_02_ModelObject_02_CreateAndUpdate() {
-        let newObject: User? = databaseAPI.create()
-        XCTAssertTrue(databaseAPI.update(newObject!))
+        let newObject: User? = database.create()
+        XCTAssertTrue(database.update(newObject!))
     }
     
     func test_02_ModelObject_03_Create_Multi() {
-        let objectOne: User = databaseAPI.create()!
-        let objectTwo: User = databaseAPI.create()!
+        let objectOne: User = database.create()!
+        let objectTwo: User = database.create()!
         
         XCTAssertNotEqual(objectOne, objectTwo, "The two objects are the same one")
     }
     
     func test_03_ModelObject_01_Read() {
-        let objectOne: User = databaseAPI.create()!
-        let objectTwo: User = databaseAPI.create()!
-        _ = databaseAPI.update(objectOne)
-        _ = databaseAPI.update(objectTwo)
+        let objectOne: User = database.create()!
+        let objectTwo: User = database.create()!
+        _ = database.update(objectOne)
+        _ = database.update(objectTwo)
         
-        let recoveredObjects: [User]? = databaseAPI.recover()
+        let recoveredObjects: [User]? = database.recover()
         XCTAssertNotNil(recoveredObjects)
         XCTAssertEqual(recoveredObjects!.count, 2, "Doesn't have the two objects")
     }
     
     func test_03_ModelObject_02_Read_Specific() {
-        let objectToFind: User = databaseAPI.create()!
+        let objectToFind: User = database.create()!
         let objectId = "objectId"
         objectToFind.id = objectId
         
-        let objectTwo: User = databaseAPI.create()!
-        _ = databaseAPI.update(objectToFind)
-        _ = databaseAPI.update(objectTwo)
+        let objectTwo: User = database.create()!
+        _ = database.update(objectToFind)
+        _ = database.update(objectTwo)
         
-        let recoveredObjects: [User]? = databaseAPI.recover(key: "id", value: objectId)
+        let recoveredObjects: [User]? = database.recover(key: "id", value: objectId)
         XCTAssertNotNil(recoveredObjects)
         XCTAssertEqual(recoveredObjects!.count, 1, "Doesn't have the object")
         XCTAssertEqual(recoveredObjects![0].id, objectId, "Not the same object")
     }
     
     func test_04_ModelObject_01_Delete() {
-        let objectToDelete: User = databaseAPI.create()!
+        let objectToDelete: User = database.create()!
         let objectId = "objectId"
         objectToDelete.id = objectId
         
-        let objectTwo: User = databaseAPI.create()!
-        _ = databaseAPI.update(objectToDelete)
-        _ = databaseAPI.update(objectTwo)
+        let objectTwo: User = database.create()!
+        _ = database.update(objectToDelete)
+        _ = database.update(objectTwo)
 
-        let recoveredObjects: [User]? = databaseAPI.recover()
+        let recoveredObjects: [User]? = database.recover()
         XCTAssertNotNil(recoveredObjects)
         XCTAssertEqual(recoveredObjects!.count, 2, "Doesn't have the two objects")
 
-        let result = databaseAPI.delete(objectToDelete)
+        let result = database.delete(objectToDelete)
         XCTAssertTrue(result)
 
-        let newRecoveredObjects: [User]? = databaseAPI.recover()
+        let newRecoveredObjects: [User]? = database.recover()
         XCTAssertNotNil(newRecoveredObjects)
         XCTAssertEqual(newRecoveredObjects!.count, 1, "Should have only one object")
     }
     
     func test_05_RecoverContext() {
-        XCTAssertNotNil(databaseAPI.getContext())
+        XCTAssertNotNil(database.getContext())
     }
         
     func test_000_Migration_DifferentScenarios() {

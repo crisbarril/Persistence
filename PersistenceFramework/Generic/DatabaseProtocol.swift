@@ -33,10 +33,10 @@ public protocol DatabaseProtocol {
     func getContext() -> DatabaseContextType
 }
 
-public protocol Updatable: DatabaseProtocol {
+public protocol Updatable {
     func update<T: DatabaseObjectTypeProtocol>(_ object: T) -> Bool
 }
 
-public protocol Saveable: DatabaseProtocol {
+public protocol Saveable {
     func save() throws
 }

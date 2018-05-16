@@ -15,7 +15,7 @@ class CoreDataTests: XCTestCase {
     private let testBundle = Bundle(for: CoreDataTests.self)
     private let testDatabaseName = "testCoreDataDatabase"
     private let testDatabaseNameTwo = "testCoreDataDatabaseTwo"
-    private var databaseAPI: CoreDataAPI!
+    private var database: CoreDataAPI!
     private var databaseImplementation: CoreDataManager!
     private var testModelURL: URL!
     
@@ -24,8 +24,8 @@ class CoreDataTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         testModelURL = testBundle.url(forResource: "TestModel", withExtension:"momd")
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseName, bundle: testBundle, modelURL: testModelURL)
-        databaseAPI = try! databaseBuilder.initialize() as CoreDataAPI
-        databaseImplementation = databaseAPI.coreDataInstance as! CoreDataManager
+        database = try! databaseBuilder.initialize() as CoreDataAPI
+        databaseImplementation = database.coreDataInstance as! CoreDataManager
     }
     
     override func tearDown() {
@@ -36,33 +36,33 @@ class CoreDataTests: XCTestCase {
     }
     
     func test_01_Initialize_01_Single() {
-        XCTAssertNotNil(databaseAPI)
-        XCTAssertNotNil(databaseAPI.databaseContext)
+        XCTAssertNotNil(database)
+        XCTAssertNotNil(database.databaseContext)
         XCTAssertNotNil(databaseImplementation)
     }
     
     func test_01_Initialize_02_Multi() {
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseNameTwo, bundle: testBundle, modelURL: testModelURL)
-        let databaseAPITwo = try! databaseBuilder.initialize() as CoreDataAPI
+        let databaseTwo = try! databaseBuilder.initialize() as CoreDataAPI
         
-        XCTAssertNotNil(databaseAPI)
-        XCTAssertNotNil(databaseAPI.databaseContext)
+        XCTAssertNotNil(database)
+        XCTAssertNotNil(database.databaseContext)
         XCTAssertNotNil(databaseImplementation)
         
-        XCTAssertNotNil(databaseAPITwo)
-        XCTAssertNotNil(databaseAPITwo.databaseContext)
-        XCTAssertNotNil(databaseAPITwo.coreDataInstance)
+        XCTAssertNotNil(databaseTwo)
+        XCTAssertNotNil(databaseTwo.databaseContext)
+        XCTAssertNotNil(databaseTwo.coreDataInstance)
         
-        XCTAssertNotEqual(databaseAPITwo.databaseContext, databaseAPI.databaseContext, "Context are equals")
+        XCTAssertNotEqual(databaseTwo.databaseContext, database.databaseContext, "Context are equals")
     }
 
     func test_01_Initialize_03_Repeated() {
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseName, bundle: testBundle, modelURL: testModelURL)
-        let databaseAPITwo = try! databaseBuilder.initialize() as CoreDataAPI
+        let databaseTwo = try! databaseBuilder.initialize() as CoreDataAPI
         
-        XCTAssertNotNil(databaseAPITwo)
-        XCTAssertNotNil(databaseAPITwo.databaseContext)
-        XCTAssertEqual(databaseAPITwo.databaseContext, databaseAPI.databaseContext, "Context aren't equals")
+        XCTAssertNotNil(databaseTwo)
+        XCTAssertNotNil(databaseTwo.databaseContext)
+        XCTAssertEqual(databaseTwo.databaseContext, database.databaseContext, "Context aren't equals")
     }
     
     func test_01_Initialize_04_KO() {
@@ -72,65 +72,65 @@ class CoreDataTests: XCTestCase {
     }
     
     func test_02_ModelObject_01_Create() {
-        let newObject: TestEntity? = databaseAPI.create()
+        let newObject: TestEntity? = database.create()
         XCTAssertNotNil(newObject, "Fail to create TestEntity object")
     }
     
     func test_02_ModelObject_02_CreateAndSave() {
-        _ = databaseAPI.create() as TestEntity?
-        XCTAssertNoThrow(try databaseAPI.save())
+        _ = database.create() as TestEntity?
+        XCTAssertNoThrow(try database.save())
     }
     
     func test_02_ModelObject_03_Create_Multi() {
-        let objectOne: TestEntity = databaseAPI.create()!
-        let objectTwo: TestEntity = databaseAPI.create()!
+        let objectOne: TestEntity = database.create()!
+        let objectTwo: TestEntity = database.create()!
         
         XCTAssertNotEqual(objectOne, objectTwo, "The two objects are the same one")
     }
 
     func test_03_ModelObject_01_Read() {
-        _ = databaseAPI.create() as TestEntity?
-        _ = databaseAPI.create() as TestEntity?
-        try! databaseAPI.save()
+        _ = database.create() as TestEntity?
+        _ = database.create() as TestEntity?
+        try! database.save()
         
-        let recoveredObjects: [TestEntity]? = databaseAPI.recover()
+        let recoveredObjects: [TestEntity]? = database.recover()
         XCTAssertNotNil(recoveredObjects)
         XCTAssertEqual(recoveredObjects!.count, 2, "Doesn't have the two objects")
     }
     
     func test_03_ModelObject_02_Read_Specific() {
-        _ = databaseAPI.create() as TestEntity?
-        let objectToFind: TestEntity = databaseAPI.create()!
+        _ = database.create() as TestEntity?
+        let objectToFind: TestEntity = database.create()!
         let testValue = "testValue"
         objectToFind.testAttribute = testValue
-        try! databaseAPI.save()
+        try! database.save()
         
-        let recoveredObjects: [TestEntity]? = databaseAPI.recover(key: "testAttribute", value: testValue)
+        let recoveredObjects: [TestEntity]? = database.recover(key: "testAttribute", value: testValue)
         XCTAssertNotNil(recoveredObjects)
         XCTAssertEqual(recoveredObjects!.count, 1, "Doesn't have the object")
         XCTAssertEqual(recoveredObjects![0], objectToFind, "Not the same object")
     }
 
     func test_04_ModelObject_01_Delete() {
-        _ = databaseAPI.create() as TestEntity?
-        let objectToDelete: TestEntity = databaseAPI.create()!
-        try! databaseAPI.save()
+        _ = database.create() as TestEntity?
+        let objectToDelete: TestEntity = database.create()!
+        try! database.save()
         
-        let recoveredObjects: [TestEntity]? = databaseAPI.recover()
+        let recoveredObjects: [TestEntity]? = database.recover()
         XCTAssertNotNil(recoveredObjects)
         XCTAssertEqual(recoveredObjects!.count, 2, "Doesn't have the two objects")
         
-        let result = databaseAPI.delete(objectToDelete)
+        let result = database.delete(objectToDelete)
         XCTAssertTrue(result)
-        try! databaseAPI.save()
+        try! database.save()
         
-        let newRecoveredObjects: [TestEntity]? = databaseAPI.recover()
+        let newRecoveredObjects: [TestEntity]? = database.recover()
         XCTAssertNotNil(newRecoveredObjects)
         XCTAssertEqual(newRecoveredObjects!.count, 1, "Should have only one object")
     }
 
     func test_05_RecoverContext() {
-        XCTAssertNotNil(databaseAPI.getContext())
+        XCTAssertNotNil(database.getContext())
     }
     
     func test_99_Performance() {
