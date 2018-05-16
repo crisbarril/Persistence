@@ -18,6 +18,12 @@ public struct CoreDataBuilder: CoreDataBuilderProtocol {
     public let bundle: Bundle
     public let modelURL: URL
     
+    public init(databaseName: String, bundle: Bundle, modelURL: URL) {
+        self.databaseName = databaseName
+        self.bundle = bundle
+        self.modelURL = modelURL
+    }
+    
     public func initialize<DatabaseTypeProtocol>() throws -> DatabaseTypeProtocol where DatabaseTypeProtocol : DatabaseProtocol {
         do {
             try CoreDataManager.sharedInstance.initialize(self)

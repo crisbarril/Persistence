@@ -21,7 +21,7 @@ public struct RealmBuilder: RealmBuilderProtocol {
     public let schemaVersion: UInt64
     public let migrationBlock: MigrationBlock?
     
-    init(databaseName: String, passphrase: String, schemaVersion: UInt64 = 0, migrationBlock: MigrationBlock? = nil) {
+    public init(databaseName: String, passphrase: String, schemaVersion: UInt64 = 0, migrationBlock: MigrationBlock? = nil) {
         self.databaseName = databaseName
         self.passphrase = passphrase
         self.schemaVersion = schemaVersion
