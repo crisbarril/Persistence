@@ -131,7 +131,7 @@ Use example:
 ```swift
 let modelURL = Bundle.main.url(forResource: "MyModel", withExtension:"momd")
 let databaseBuilder = CoreDataBuilder(databaseName: "CoreDataDatabaseName", bundle: Bundle.main, modelURL: modelURL)
-let databaseAPI = try? databaseBuilder.initialize() as CoreDataAPI
+let database = try? databaseBuilder.initialize() as CoreDataAPI
 ```
 
 
@@ -163,7 +163,7 @@ Use example:
 
 ```swift
 let databaseBuilder = RealmBuilder(databaseName: "RealmDatabaseName", passphrase: "Passphrase")
-let databaseAPI = try? databaseBuilder.initialize() as RealmAPI
+let database = try? databaseBuilder.initialize() as RealmAPI
 ```
 
 **REMEMBER:** This is just an example. Feel free to fork this repo and make your own version.
@@ -177,7 +177,7 @@ let databaseAPI = try? databaseBuilder.initialize() as RealmAPI
 Example to create a new **User** entity:
 
 ```swift
-let newObject: User? = databaseAPI.create()
+let newObject: User? = database.create()
 ```
 
 #### Recover
@@ -185,22 +185,22 @@ let newObject: User? = databaseAPI.create()
 Example to recover all **User** entities:
 
 ```swift
-let recoveredObjects: [User]? = databaseAPI.recover()
+let recoveredObjects: [User]? = database.recover()
 ```
 
 Example to recover a specific **User** entity. Can be used with any attribute, that is why it returns an Array. E.g.: return every **User** with name "John"
 
 
 ```swift
-let recoveredObjects: [User]? = databaseAPI.recover(key: "name", value: "John")
+let recoveredObjects: [User]? = database.recover(key: "name", value: "John")
 ```
 
 #### Delete
 
-Example to delete a specific **User** entity:
+Example to delete a specific **User** entity. Returns true if the operation succeed or false if not:
 
 ```swift
-let result = databaseAPI.delete(objectToDelete)
+let result = database.delete(objectToDelete)
 ```
 
 ### Core Data
@@ -209,23 +209,23 @@ let result = databaseAPI.delete(objectToDelete)
 Custom Core Data method to save the context:
 
 ```swift
-try? databaseAPI.save()
+try? database.save()
 ```
 
 ### Realm
 
 #### Update
-Custom Realm method to update a specific **User** entity:
+Custom Realm method to update a specific **User** entity. Returns true if the operation succeed or false if not:
 
 ```swift
-let result = databaseAPI.update(newObject)
+let result = database.update(newObject)
 ```
 
 ### Add Custom Code
 
 To make any other use of the databases, you can recover the context to use it:
 ```swift
-let context = databaseAPI.getContext()
+let context = database.getContext()
 ```
 
 # Migrations
