@@ -22,7 +22,7 @@
       - [Save](#save)
     + [Realm](#realm)
       - [Update](#update)
-    + [Custom Code](#custom-code)
+    + [Add Custom Code](#add-custom-code)
 - [Migrations](#migrations)
   * [Core Data](#core-data-1)
   * [Realm](#realm-1)
@@ -31,7 +31,7 @@
 # PersistenceFramework
 Framework to encapsulate persistence logic using Protocol Oriented Programming. This is an EXAMPLE framework to show how to use:
 
-- Cocopods
+- Cocoapods
 - Protocol Oriented Programming
 - Dependency injection
 - Unit Testing
@@ -60,7 +60,7 @@ pod 'PersistenceFramework/Realm'
 ```
 
 # How to use
-To use this framework, you have to know just a few commons protocols that will be implemented for every database. This makes easy to change from one to another.
+To use this framework, you have to know just a few protocols. This makes easy to change from one database to another.
 
 ## Protocols
 
@@ -78,16 +78,6 @@ public protocol DatabaseProtocol {
 }
 ```
 
-### Updatable Protocol
-
-Optional protocol used in Realm.
-
-```swift
-public protocol Updatable: DatabaseProtocol {
-    func update<T: DatabaseObjectTypeProtocol>(_ object: T) -> Bool
-}
-```
-
 ### Saveable Protocol
 
 Optional protocol used in Core Data.
@@ -98,20 +88,30 @@ public protocol Saveable: DatabaseProtocol {
 }
 ```
 
-**REMEMBER:** This is just an example. Feel free to fork this repo and make your own framework.
+### Updatable Protocol
+
+Optional protocol used in Realm.
+
+```swift
+public protocol Updatable: DatabaseProtocol {
+    func update<T: DatabaseObjectTypeProtocol>(_ object: T) -> Bool
+}
+```
+
+**REMEMBER:** This is just an example. Feel free to fork this repo and make your own version.
 
 ## Builders
 
-To create or recover a database, you have to use the **DatabaseBuilder** struct specific for the desired database. This struct required to be initialized with all the vital information for each case (Core Data need some differents things than Realm)
+To create or recover a database, you have to use the **DatabaseBuilder** struct specific for the desired database. This struct required to be initialized with all the vital information for each case (Core Data need differents things than Realm)
 
 ### Core Data Builder
 
-Instantiate this struct to create a Core Data database. You can have as many as you want, in any bundle that you need. Just be sure to use a different "name" if they are in the same bundle.
+Instantiate this struct to create a Core Data database. You can have as many as you want. Just be sure to use a different "name".
 
 The information you need to provide is:
 
 - databaseName: String parameter with the name of the database.
-- bundle: Bundle where the NSManagedObjectModel file is located, needed in case of a migration.
+- bundle: Bundle where the NSManagedObjectModel file is located, needed in case of migration.
 - modelURL: URL with the path to the NSManagedObjectModel file.
 
 ```swift
@@ -129,7 +129,7 @@ public struct CoreDataBuilder: CoreDataBuilderProtocol {
 Use example:
 
 ```swift
-let modelURL = Bundle.main.url(forResource: "Model", withExtension:"momd")
+let modelURL = Bundle.main.url(forResource: "MyModel", withExtension:"momd")
 let databaseBuilder = CoreDataBuilder(databaseName: "CoreDataDatabaseName", bundle: Bundle.main, modelURL: modelURL)
 let databaseAPI = try? databaseBuilder.initialize() as CoreDataAPI
 ```
@@ -137,7 +137,7 @@ let databaseAPI = try? databaseBuilder.initialize() as CoreDataAPI
 
 ### Realm Builder
 
-Instantiate this struct to create a Realm database. You can have as many as you want, in any bundle that you need. Just be sure to use a different "name" if they are in the same bundle.
+Instantiate this struct to create a Realm database. You can have as many as you want. Just be sure to use a different "name".
 
 The information you need to provide is:
 
@@ -166,7 +166,7 @@ let databaseBuilder = RealmBuilder(databaseName: "RealmDatabaseName", passphrase
 let databaseAPI = try? databaseBuilder.initialize() as RealmAPI
 ```
 
-**REMEMBER:** This is just an example. Feel free to fork this repo and make your own framework.
+**REMEMBER:** This is just an example. Feel free to fork this repo and make your own version.
 
 ## Use
 
@@ -174,7 +174,7 @@ let databaseAPI = try? databaseBuilder.initialize() as RealmAPI
 
 #### Creation
 
-Example to create a new _User_ entity:
+Example to create a new **User** entity:
 
 ```swift
 let newObject: User? = databaseAPI.create()
@@ -182,21 +182,22 @@ let newObject: User? = databaseAPI.create()
 
 #### Recover
 
-Example to recover all _User_ entities:
+Example to recover all **User** entities:
 
 ```swift
 let recoveredObjects: [User]? = databaseAPI.recover()
 ```
 
-Example to recover a specific _User_ entity:
+Example to recover a specific **User** entity. Can be used with any attribute, that is why it returns an Array. E.g.: return every **User** with name "John"
+
 
 ```swift
-let recoveredObjects: [User]? = databaseAPI.recover(key: "id", value: objectId)
+let recoveredObjects: [User]? = databaseAPI.recover(key: "name", value: "John")
 ```
 
 #### Delete
 
-Example to delete a specific _User_ entity:
+Example to delete a specific **User** entity:
 
 ```swift
 let result = databaseAPI.delete(objectToDelete)
@@ -214,13 +215,13 @@ try? databaseAPI.save()
 ### Realm
 
 #### Update
-Custom Realm method to update a specific _User_ entity:
+Custom Realm method to update a specific **User** entity:
 
 ```swift
 let result = databaseAPI.update(newObject)
 ```
 
-### Custom Code
+### Add Custom Code
 
 To make any other use of the databases, you can recover the context to use it:
 ```swift
@@ -228,11 +229,15 @@ let context = databaseAPI.getContext()
 ```
 
 # Migrations
+
 ## Core Data
+
 * **Lightweight migration**: just needs to initialize the database as always and the framework will migrate automatically. 
-* **Heavyweight migration**: needs to create, in the same bundle of the database, a _NSMappingModel_ to do it. If needed, in the _NSMappingModel_ you can also setup a class of _NSEntityMigrationPolicy_ type and add custom logic for the migration process.
+
+* **Heavyweight migration**: needs to create, in the same bundle of the database, a **NSMappingModel** to do it. If needed, in the **NSMappingModel** you can also setup a class of **NSEntityMigrationPolicy** type and add custom logic for the migration process.
 
 ## Realm
+
 When the model changes, you have to follow the next steps:
 
 * Raise the schema version
