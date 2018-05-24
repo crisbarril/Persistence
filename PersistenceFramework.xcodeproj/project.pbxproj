@@ -7,20 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4001289D20B750B5007A01C4 /* DatabaseBuilderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001289C20B750B5007A01C4 /* DatabaseBuilderProtocol.swift */; };
+		4001289F20B750D5007A01C4 /* DatabaseImplementationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001289E20B750D4007A01C4 /* DatabaseImplementationProtocol.swift */; };
 		403079E920586ACF00B2D0C2 /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403079E820586ACF00B2D0C2 /* DatabaseHelper.swift */; };
 		403079EE205896FE00B2D0C2 /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 403079EC205896FE00B2D0C2 /* TestModel.xcdatamodeld */; };
 		40426FC4204F3B4B00720A53 /* Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40426FC2204F3B4B00720A53 /* Url.swift */; };
 		40877E1E20A4DDED001EA579 /* CoreDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40877E1D20A4DDED001EA579 /* CoreDataBuilder.swift */; };
 		40B2B57D20A88CDB00645BC2 /* RealmBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B2B57C20A88CDB00645BC2 /* RealmBuilder.swift */; };
-		40B2B57F20A891EA00645BC2 /* RealmAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B2B57E20A891EA00645BC2 /* RealmAPI.swift */; };
-		40B2B58120A892B300645BC2 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B2B58020A892B300645BC2 /* RealmManager.swift */; };
+		40B2B57F20A891EA00645BC2 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B2B57E20A891EA00645BC2 /* RealmManager.swift */; };
+		40B2B58120A892B300645BC2 /* RealmImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B2B58020A892B300645BC2 /* RealmImplementation.swift */; };
 		40B2B58320A8A86D00645BC2 /* RealmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B2B58220A8A86D00645BC2 /* RealmTests.swift */; };
 		40B6CA9320A86E2A009B99F1 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B6CA9220A86E2A009B99F1 /* CoreDataTests.swift */; };
 		40BD6D02204F367B006ACB55 /* PersistenceFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40BD6CF8204F367B006ACB55 /* PersistenceFramework.framework */; };
 		40BD6D09204F367B006ACB55 /* PersistenceFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BD6CFB204F367B006ACB55 /* PersistenceFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		40EB2D1C20A382C70075DE20 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EB2D1B20A382C70075DE20 /* CoreDataManager.swift */; };
+		40EB2D1C20A382C70075DE20 /* CoreDataImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EB2D1B20A382C70075DE20 /* CoreDataImplementation.swift */; };
 		40FF46D220A4DEA600CA6426 /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF46D120A4DEA600CA6426 /* DatabaseProtocol.swift */; };
-		40FF46D620A4DFE900CA6426 /* CoreDataAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF46D520A4DFE900CA6426 /* CoreDataAPI.swift */; };
+		40FF46D620A4DFE900CA6426 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF46D520A4DFE900CA6426 /* CoreDataManager.swift */; };
 		69939A772062B1A100FD95F0 /* ErrorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69939A762062B1A100FD95F0 /* ErrorFactory.swift */; };
 		85AA217CA66EA55453E7114D /* Pods_PersistenceFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5528612B02E00E434A04D177 /* Pods_PersistenceFramework.framework */; };
 		EE3A71EC7F2293989A843CC5 /* Pods_PersistenceFrameworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 258FD223444D8947CB1F019A /* Pods_PersistenceFrameworkTests.framework */; };
@@ -39,13 +41,15 @@
 /* Begin PBXFileReference section */
 		258FD223444D8947CB1F019A /* Pods_PersistenceFrameworkTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PersistenceFrameworkTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3255651D4871416F100B57DE /* Pods-PersistenceFramework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersistenceFramework.release.xcconfig"; path = "Pods/Target Support Files/Pods-PersistenceFramework/Pods-PersistenceFramework.release.xcconfig"; sourceTree = "<group>"; };
+		4001289C20B750B5007A01C4 /* DatabaseBuilderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseBuilderProtocol.swift; sourceTree = "<group>"; };
+		4001289E20B750D4007A01C4 /* DatabaseImplementationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseImplementationProtocol.swift; sourceTree = "<group>"; };
 		403079E820586ACF00B2D0C2 /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		403079ED205896FE00B2D0C2 /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
 		40426FC2204F3B4B00720A53 /* Url.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Url.swift; sourceTree = "<group>"; };
 		40877E1D20A4DDED001EA579 /* CoreDataBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataBuilder.swift; sourceTree = "<group>"; };
 		40B2B57C20A88CDB00645BC2 /* RealmBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmBuilder.swift; sourceTree = "<group>"; };
-		40B2B57E20A891EA00645BC2 /* RealmAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmAPI.swift; sourceTree = "<group>"; };
-		40B2B58020A892B300645BC2 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		40B2B57E20A891EA00645BC2 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		40B2B58020A892B300645BC2 /* RealmImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmImplementation.swift; sourceTree = "<group>"; };
 		40B2B58220A8A86D00645BC2 /* RealmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmTests.swift; sourceTree = "<group>"; };
 		40B6CA9220A86E2A009B99F1 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		40BD6CF8204F367B006ACB55 /* PersistenceFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PersistenceFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,9 +57,9 @@
 		40BD6CFC204F367B006ACB55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40BD6D01204F367B006ACB55 /* PersistenceFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PersistenceFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40BD6D08204F367B006ACB55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		40EB2D1B20A382C70075DE20 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		40EB2D1B20A382C70075DE20 /* CoreDataImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataImplementation.swift; sourceTree = "<group>"; };
 		40FF46D120A4DEA600CA6426 /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
-		40FF46D520A4DFE900CA6426 /* CoreDataAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataAPI.swift; sourceTree = "<group>"; };
+		40FF46D520A4DFE900CA6426 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		5528612B02E00E434A04D177 /* Pods_PersistenceFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PersistenceFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69939A7120628F3A00FD95F0 /* TestModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TestModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		69939A762062B1A100FD95F0 /* ErrorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorFactory.swift; sourceTree = "<group>"; };
@@ -100,8 +104,8 @@
 			isa = PBXGroup;
 			children = (
 				40877E1D20A4DDED001EA579 /* CoreDataBuilder.swift */,
-				40FF46D520A4DFE900CA6426 /* CoreDataAPI.swift */,
-				40EB2D1B20A382C70075DE20 /* CoreDataManager.swift */,
+				40FF46D520A4DFE900CA6426 /* CoreDataManager.swift */,
+				40EB2D1B20A382C70075DE20 /* CoreDataImplementation.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -124,12 +128,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		40877E1A20A4DCE1001EA579 /* Generic */ = {
+		40877E1A20A4DCE1001EA579 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
 				40FF46D120A4DEA600CA6426 /* DatabaseProtocol.swift */,
+				4001289C20B750B5007A01C4 /* DatabaseBuilderProtocol.swift */,
+				4001289E20B750D4007A01C4 /* DatabaseImplementationProtocol.swift */,
 			);
-			path = Generic;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		40BD6CEE204F367B006ACB55 = {
@@ -155,7 +161,7 @@
 		40BD6CFA204F367B006ACB55 /* PersistenceFramework */ = {
 			isa = PBXGroup;
 			children = (
-				40877E1A20A4DCE1001EA579 /* Generic */,
+				40877E1A20A4DCE1001EA579 /* Protocols */,
 				403079E12058680700B2D0C2 /* CoreData */,
 				40BD6D13204F36B0006ACB55 /* Realm */,
 				403079E720586ABE00B2D0C2 /* Helper */,
@@ -179,8 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				40B2B57C20A88CDB00645BC2 /* RealmBuilder.swift */,
-				40B2B57E20A891EA00645BC2 /* RealmAPI.swift */,
-				40B2B58020A892B300645BC2 /* RealmManager.swift */,
+				40B2B57E20A891EA00645BC2 /* RealmManager.swift */,
+				40B2B58020A892B300645BC2 /* RealmImplementation.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -416,15 +422,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40B2B58120A892B300645BC2 /* RealmManager.swift in Sources */,
+				4001289F20B750D5007A01C4 /* DatabaseImplementationProtocol.swift in Sources */,
+				40B2B58120A892B300645BC2 /* RealmImplementation.swift in Sources */,
 				69939A772062B1A100FD95F0 /* ErrorFactory.swift in Sources */,
 				40FF46D220A4DEA600CA6426 /* DatabaseProtocol.swift in Sources */,
-				40EB2D1C20A382C70075DE20 /* CoreDataManager.swift in Sources */,
+				40EB2D1C20A382C70075DE20 /* CoreDataImplementation.swift in Sources */,
 				403079E920586ACF00B2D0C2 /* DatabaseHelper.swift in Sources */,
-				40FF46D620A4DFE900CA6426 /* CoreDataAPI.swift in Sources */,
+				40FF46D620A4DFE900CA6426 /* CoreDataManager.swift in Sources */,
 				40B2B57D20A88CDB00645BC2 /* RealmBuilder.swift in Sources */,
+				4001289D20B750B5007A01C4 /* DatabaseBuilderProtocol.swift in Sources */,
 				40877E1E20A4DDED001EA579 /* CoreDataBuilder.swift in Sources */,
-				40B2B57F20A891EA00645BC2 /* RealmAPI.swift in Sources */,
+				40B2B57F20A891EA00645BC2 /* RealmManager.swift in Sources */,
 				40426FC4204F3B4B00720A53 /* Url.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

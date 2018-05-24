@@ -15,8 +15,7 @@ class CoreDataTests: XCTestCase {
     private let testBundle = Bundle(for: CoreDataTests.self)
     private let testDatabaseName = "testCoreDataDatabase"
     private let testDatabaseNameTwo = "testCoreDataDatabaseTwo"
-    private var database: CoreDataAPI!
-    private var databaseImplementation: CoreDataManager!
+    private var database: CoreDataManager!
     private var testModelURL: URL!
     
     override func setUp() {
@@ -24,51 +23,50 @@ class CoreDataTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         testModelURL = testBundle.url(forResource: "TestModel", withExtension:"momd")
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseName, bundle: testBundle, modelURL: testModelURL)
-        database = try! databaseBuilder.initialize() as CoreDataAPI
-        databaseImplementation = database.coreDataInstance as! CoreDataManager
+        database = try! databaseBuilder.create() as CoreDataManager
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        try? databaseImplementation.deleteAllCoreData()
-        databaseImplementation.cleanUpAll()
+        try? CoreDataImplementation.sharedInstance.deleteAllCoreData()
+        CoreDataImplementation.sharedInstance.cleanUpAll()
         super.tearDown()
     }
     
-    func test_01_Initialize_01_Single() {
+    func test_01_Create_01_Single() {
         XCTAssertNotNil(database)
-        XCTAssertNotNil(database.databaseContext)
-        XCTAssertNotNil(databaseImplementation)
+        XCTAssertNotNil(database.context)
+        XCTAssertNotNil(CoreDataImplementation.sharedInstance)
     }
     
-    func test_01_Initialize_02_Multi() {
+    func test_01_Create_02_Multi() {
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseNameTwo, bundle: testBundle, modelURL: testModelURL)
-        let databaseTwo = try! databaseBuilder.initialize() as CoreDataAPI
+        let databaseTwo = try! databaseBuilder.create() as CoreDataManager
         
         XCTAssertNotNil(database)
-        XCTAssertNotNil(database.databaseContext)
-        XCTAssertNotNil(databaseImplementation)
+        XCTAssertNotNil(database.context)
+        XCTAssertNotNil(CoreDataImplementation.sharedInstance)
         
         XCTAssertNotNil(databaseTwo)
-        XCTAssertNotNil(databaseTwo.databaseContext)
-        XCTAssertNotNil(databaseTwo.coreDataInstance)
+        XCTAssertNotNil(databaseTwo.context)
+        XCTAssertNotNil(CoreDataImplementation.sharedInstance)
         
-        XCTAssertNotEqual(databaseTwo.databaseContext, database.databaseContext, "Context are equals")
+        XCTAssertNotEqual(databaseTwo.context, database.context, "Context are equals")
     }
 
-    func test_01_Initialize_03_Repeated() {
+    func test_01_Create_03_Repeated() {
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseName, bundle: testBundle, modelURL: testModelURL)
-        let databaseTwo = try! databaseBuilder.initialize() as CoreDataAPI
+        let databaseTwo = try! databaseBuilder.create() as CoreDataManager
         
         XCTAssertNotNil(databaseTwo)
-        XCTAssertNotNil(databaseTwo.databaseContext)
-        XCTAssertEqual(databaseTwo.databaseContext, database.databaseContext, "Context aren't equals")
+        XCTAssertNotNil(databaseTwo.context)
+        XCTAssertEqual(databaseTwo.context, database.context, "Context aren't equals")
     }
     
-    func test_01_Initialize_04_KO() {
+    func test_01_Create_04_KO() {
         let testModelURLWrong = DatabaseHelper.getStoreUrl("TestModelWrong.momd")
         let databaseBuilderWrong = CoreDataBuilder(databaseName: testDatabaseNameTwo, bundle: testBundle, modelURL: testModelURLWrong)
-        XCTAssertThrowsError(try databaseBuilderWrong.initialize() as CoreDataAPI)
+        XCTAssertThrowsError(try databaseBuilderWrong.create() as CoreDataManager)
     }
     
     func test_02_ModelObject_01_Create() {
@@ -135,9 +133,9 @@ class CoreDataTests: XCTestCase {
     
     func test_99_Performance() {
         self.measure {
-            self.test_01_Initialize_01_Single()
-            self.test_01_Initialize_02_Multi()
-            self.test_01_Initialize_03_Repeated()
+            self.test_01_Create_01_Single()
+            self.test_01_Create_02_Multi()
+            self.test_01_Create_03_Repeated()
             self.test_02_ModelObject_01_Create()
             self.test_02_ModelObject_02_CreateAndSave()
             self.test_02_ModelObject_03_Create_Multi()

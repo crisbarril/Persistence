@@ -17,8 +17,7 @@ class RealmTests: XCTestCase {
     private let testDatabaseNameMigration = "testDatabaseNameMigration"
     private let testDatabasePassphrase = "passphrase"
     private let lastSchemaVersion: UInt64 = 0
-    private var database: RealmAPI!
-    private var databaseImplementation: RealmManager!
+    private var database: RealmManager!
     private var isMigrationInProgress: Bool {
         get {
             return self.lastSchemaVersion > 0
@@ -31,8 +30,7 @@ class RealmTests: XCTestCase {
         
         if !isMigrationInProgress {
             let databaseBuilder = RealmBuilder(databaseName: testDatabaseName, passphrase: testDatabasePassphrase)
-            database = try! databaseBuilder.initialize() as RealmAPI
-            databaseImplementation = database.realmInstance as! RealmManager
+            database = try! databaseBuilder.create() as RealmManager
         }
     }
 
@@ -40,45 +38,45 @@ class RealmTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         
         if !isMigrationInProgress {
-            try? databaseImplementation.deleteAllRealm()
-            databaseImplementation.cleanUpAll()
+            try? RealmImplementation.sharedInstance.deleteAllRealm()
+            RealmImplementation.sharedInstance.cleanUpAll()
         }
         super.tearDown()
     }
 
-    func test_01_Initialize_01_Single() {
+    func test_01_Create_01_Single() {
         XCTAssertNotNil(database)
-        XCTAssertNotNil(database.databaseContext)
-        XCTAssertNotNil(databaseImplementation)
+        XCTAssertNotNil(database.context)
+        XCTAssertNotNil(RealmImplementation.sharedInstance)
     }
     
-    func test_01_Initialize_02_Multi() {
+    func test_01_Create_02_Multi() {
         let databaseBuilder = RealmBuilder(databaseName: testDatabaseNameTwo, passphrase: testDatabasePassphrase)
-        let databaseAPITwo = try! databaseBuilder.initialize() as RealmAPI
+        let databaseAPITwo = try! databaseBuilder.create() as RealmManager
         
         XCTAssertNotNil(database)
-        XCTAssertNotNil(database.databaseContext)
-        XCTAssertNotNil(databaseImplementation)
+        XCTAssertNotNil(database.context)
+        XCTAssertNotNil(RealmImplementation.sharedInstance)
         
         XCTAssertNotNil(databaseAPITwo)
-        XCTAssertNotNil(databaseAPITwo.databaseContext)
-        XCTAssertNotNil(databaseAPITwo.realmInstance)
+        XCTAssertNotNil(databaseAPITwo.context)
+        XCTAssertNotNil(RealmImplementation.sharedInstance)
         
-        XCTAssertNotEqual(databaseAPITwo.databaseContext, database.databaseContext, "Context are equals")
+        XCTAssertNotEqual(databaseAPITwo.context, database.context, "Context are equals")
     }
     
-    func test_01_Initialize_03_Repeated() {
+    func test_01_Create_03_Repeated() {
         let databaseBuilder = RealmBuilder(databaseName: testDatabaseName, passphrase: testDatabasePassphrase)
-        let databaseAPITwo = try! databaseBuilder.initialize() as RealmAPI
+        let databaseAPITwo = try! databaseBuilder.create() as RealmManager
         
         XCTAssertNotNil(databaseAPITwo)
-        XCTAssertNotNil(databaseAPITwo.databaseContext)
-        XCTAssertEqual(databaseAPITwo.databaseContext, database.databaseContext, "Context aren't equals")
+        XCTAssertNotNil(databaseAPITwo.context)
+        XCTAssertEqual(databaseAPITwo.context, database.context, "Context aren't equals")
     }
     
-    func test_01_Initialize_04_KO() {
+    func test_01_Create_04_KO() {
         let databaseBuilderWrong = RealmBuilder(databaseName: testDatabaseNameTwo, passphrase: "")
-        XCTAssertThrowsError(try databaseBuilderWrong.initialize() as RealmAPI)
+        XCTAssertThrowsError(try databaseBuilderWrong.create() as RealmManager)
     }
 
     func test_02_ModelObject_01_Create() {
@@ -175,17 +173,17 @@ class RealmTests: XCTestCase {
             }
         })
         
-        let databaseAPI = try! databaseBuilder.initialize() as RealmAPI
+        let databaseAPI = try! databaseBuilder.create() as RealmManager
         XCTAssertNotNil(databaseAPI)
-        XCTAssertNotNil(databaseAPI.databaseContext)
-        XCTAssertNotNil(databaseAPI.realmInstance)
+        XCTAssertNotNil(databaseAPI.context)
+        XCTAssertNotNil(RealmImplementation.sharedInstance)
     }
     
     func test99_Performance() {
         self.measure {
-            self.test_01_Initialize_01_Single()
-            self.test_01_Initialize_02_Multi()
-            self.test_01_Initialize_03_Repeated()
+            self.test_01_Create_01_Single()
+            self.test_01_Create_02_Multi()
+            self.test_01_Create_03_Repeated()
             self.test_02_ModelObject_01_Create()
             self.test_02_ModelObject_02_CreateAndUpdate()
             self.test_02_ModelObject_03_Create_Multi()

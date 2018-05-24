@@ -14,6 +14,8 @@ protocol CoreDataBuilderProtocol: DatabaseBuilderProtocol {
 }
 
 public struct CoreDataBuilder: CoreDataBuilderProtocol {
+    public typealias Database = CoreDataManager
+    
     public let databaseName: String
     public let bundle: Bundle
     public let modelURL: URL
@@ -24,17 +26,12 @@ public struct CoreDataBuilder: CoreDataBuilderProtocol {
         self.modelURL = modelURL
     }
     
-    public func initialize<DatabaseTypeProtocol>() throws -> DatabaseTypeProtocol where DatabaseTypeProtocol : DatabaseProtocol {
+    public func create() throws -> CoreDataManager {
         do {
-            try CoreDataManager.sharedInstance.initialize(self)
-            let coreDataAPI = try CoreDataAPI(databaseConfiguration: self, coreDataInstance: CoreDataManager.sharedInstance)
-            if let result = coreDataAPI as? DatabaseTypeProtocol {
-                return result
-            } else {
-                throw ErrorFactory.createError(withKey: "Builder fail", failureReason: "Error creating CoreData managet", domain: "CoreDataBuilder")
-            }
-        } catch{
-            throw error
+            let context = try CoreDataImplementation.sharedInstance.createContext(withBuilder: self)
+            return CoreDataManager(withContext: context)
+        } catch {
+            throw ErrorFactory.createError(withKey: "Builder fail", failureReason: "Error creating CoreData with error: \(error)", domain: "CoreDataBuilder")
         }
     }
 }
