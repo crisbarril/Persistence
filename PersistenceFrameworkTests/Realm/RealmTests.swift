@@ -47,7 +47,6 @@ class RealmTests: XCTestCase {
     func test_01_Create_01_Single() {
         XCTAssertNotNil(database)
         XCTAssertNotNil(database.context)
-        XCTAssertNotNil(RealmImplementation.sharedInstance)
     }
     
     func test_01_Create_02_Multi() {
@@ -56,11 +55,9 @@ class RealmTests: XCTestCase {
         
         XCTAssertNotNil(database)
         XCTAssertNotNil(database.context)
-        XCTAssertNotNil(RealmImplementation.sharedInstance)
         
         XCTAssertNotNil(databaseAPITwo)
         XCTAssertNotNil(databaseAPITwo.context)
-        XCTAssertNotNil(RealmImplementation.sharedInstance)
         
         XCTAssertNotEqual(databaseAPITwo.context, database.context, "Context are equals")
     }
@@ -176,7 +173,6 @@ class RealmTests: XCTestCase {
         let databaseAPI = try! databaseBuilder.create() as RealmManager
         XCTAssertNotNil(databaseAPI)
         XCTAssertNotNil(databaseAPI.context)
-        XCTAssertNotNil(RealmImplementation.sharedInstance)
     }
     
     func test99_Performance() {

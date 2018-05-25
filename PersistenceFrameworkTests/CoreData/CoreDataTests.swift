@@ -36,7 +36,6 @@ class CoreDataTests: XCTestCase {
     func test_01_Create_01_Single() {
         XCTAssertNotNil(database)
         XCTAssertNotNil(database.context)
-        XCTAssertNotNil(CoreDataImplementation.sharedInstance)
     }
     
     func test_01_Create_02_Multi() {
@@ -45,11 +44,9 @@ class CoreDataTests: XCTestCase {
         
         XCTAssertNotNil(database)
         XCTAssertNotNil(database.context)
-        XCTAssertNotNil(CoreDataImplementation.sharedInstance)
         
         XCTAssertNotNil(databaseTwo)
         XCTAssertNotNil(databaseTwo.context)
-        XCTAssertNotNil(CoreDataImplementation.sharedInstance)
         
         XCTAssertNotEqual(databaseTwo.context, database.context, "Context are equals")
     }
