@@ -60,7 +60,7 @@ pod 'PersistenceFramework/Realm'
 ```
 
 # How to use
-To use this framework, you have to know just a few protocols. This makes easy to change from one database to another.
+To use this framework, you just have to know a few protocols. This makes easy to change from one database to another.
 
 ## Protocols
 
@@ -83,7 +83,7 @@ public protocol DatabaseProtocol {
 Optional protocol used in Core Data.
 
 ```swift
-public protocol Saveable: DatabaseProtocol {
+public protocol Saveable {
     func save() throws
 }
 ```
@@ -93,8 +93,8 @@ public protocol Saveable: DatabaseProtocol {
 Optional protocol used in Realm.
 
 ```swift
-public protocol Updatable: DatabaseProtocol {
-    func update<T: DatabaseObjectTypeProtocol>(_ object: T) -> Bool
+public protocol Updatable {
+    func update<DatabaseObject: DatabaseObjectTypeProtocol>(_ object: DatabaseObject) -> Bool
 }
 ```
 
@@ -116,12 +116,14 @@ The information you need to provide is:
 
 ```swift
 public struct CoreDataBuilder: CoreDataBuilderProtocol {
+    public typealias Database = CoreDataManager
+    
     public let databaseName: String
     public let bundle: Bundle
     public let modelURL: URL
-    
-    public func initialize<DatabaseTypeProtocol>() throws -> DatabaseTypeProtocol where DatabaseTypeProtocol : DatabaseProtocol {
-        ...
+        
+    public func create() throws -> CoreDataManager {
+		...
     }
 }
 ```
@@ -131,7 +133,7 @@ Use example:
 ```swift
 let modelURL = Bundle.main.url(forResource: "MyModel", withExtension:"momd")
 let databaseBuilder = CoreDataBuilder(databaseName: "CoreDataDatabaseName", bundle: Bundle.main, modelURL: modelURL)
-let database = try? databaseBuilder.initialize() as CoreDataAPI
+let database = try? databaseBuilder.create() as CoreDataManager
 ```
 
 
@@ -148,13 +150,15 @@ The information you need to provide is:
 
 ```swift
 public struct RealmBuilder: RealmBuilderProtocol {
+    public typealias Database = RealmManager
+    
     public let databaseName: String
     public let passphrase: String
     public let schemaVersion: UInt64
     public let migrationBlock: MigrationBlock?
-        
-    public func initialize<DatabaseTypeProtocol>() throws -> DatabaseTypeProtocol where DatabaseTypeProtocol : DatabaseProtocol {
-    	...
+    
+    public func create() throws -> RealmManager {
+	    ...
     }
 }
 ```
@@ -163,7 +167,7 @@ Use example:
 
 ```swift
 let databaseBuilder = RealmBuilder(databaseName: "RealmDatabaseName", passphrase: "Passphrase")
-let database = try? databaseBuilder.initialize() as RealmAPI
+let database = try? databaseBuilder.create() as RealmManager
 ```
 
 **REMEMBER:** This is just an example. Feel free to fork this repo and make your own version.
