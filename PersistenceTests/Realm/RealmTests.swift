@@ -1,6 +1,6 @@
 //
 //  RealmTests.swift
-//  PersistenceFrameworkTests
+//  PersistenceTests
 //
 //  Created by Cristian on 06/03/2018.
 //  Copyright © 2018 Cristian Barril. All rights reserved.
@@ -8,7 +8,7 @@
 
 import XCTest
 import RealmSwift
-@testable import PersistenceFramework
+@testable import Persistence
 
 class RealmTests: XCTestCase {
 

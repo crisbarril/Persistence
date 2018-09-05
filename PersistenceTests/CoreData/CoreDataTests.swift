@@ -1,6 +1,6 @@
 //
 //  CoreDataTests.swift
-//  PersistenceFrameworkTests
+//  PersistenceTests
 //
 //  Created by Cristian on 13/03/2018.
 //  Copyright © 2018 Cristian Barril. All rights reserved.
@@ -8,7 +8,7 @@
 
 import XCTest
 import CoreData
-@testable import PersistenceFramework
+@testable import Persistence
 
 class CoreDataTests: XCTestCase {
     

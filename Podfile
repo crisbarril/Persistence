@@ -1,14 +1,14 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '10.0'
+# platform :ios, '9.0'
 
-target 'PersistenceFramework' do
+target 'Persistence' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for PersistenceFramework
+  # Pods for Persistence
   pod 'RealmSwift', '3.1.1'
 
-  target 'PersistenceFrameworkTests' do
+  target 'PersistenceTests' do
     inherit! :search_paths
     # Pods for testing
   end
