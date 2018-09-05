@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40905E9E214048BF00751863 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40905E9B214048BF00751863 /* CoreDataManager.swift */; };
+		40905E9F214048BF00751863 /* CoreDataImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40905E9C214048BF00751863 /* CoreDataImplementation.swift */; };
+		40905EA0214048BF00751863 /* CoreDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40905E9D214048BF00751863 /* CoreDataBuilder.swift */; };
 		69489F9921401FDF00ED26DE /* Persistence.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69489F8F21401FDE00ED26DE /* Persistence.framework */; };
 		69489F9E21401FDF00ED26DE /* PersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69489F9D21401FDF00ED26DE /* PersistenceTests.swift */; };
 		69489FA021401FDF00ED26DE /* Persistence.h in Headers */ = {isa = PBXBuildFile; fileRef = 69489F9221401FDE00ED26DE /* Persistence.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -19,9 +22,6 @@
 		69FC8FB1214021EA008755CC /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FAB214021E9008755CC /* TestModel.xcdatamodeld */; };
 		69FC8FB2214021EA008755CC /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FAE214021E9008755CC /* CoreDataTests.swift */; };
 		69FC8FB3214021EA008755CC /* RealmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FB0214021EA008755CC /* RealmTests.swift */; };
-		69FC8FB721403226008755CC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FB421403226008755CC /* CoreDataManager.swift */; };
-		69FC8FB821403226008755CC /* CoreDataImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FB521403226008755CC /* CoreDataImplementation.swift */; };
-		69FC8FB921403226008755CC /* CoreDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FB621403226008755CC /* CoreDataBuilder.swift */; };
 		69FC8FBE21403241008755CC /* ErrorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FBA21403241008755CC /* ErrorFactory.swift */; };
 		69FC8FBF21403241008755CC /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FBB21403241008755CC /* DatabaseHelper.swift */; };
 		69FC8FC021403241008755CC /* Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FBD21403241008755CC /* Url.swift */; };
@@ -43,6 +43,9 @@
 		04D88A8030BD23298F7A38D5 /* Pods-PersistenceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersistenceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PersistenceTests/Pods-PersistenceTests.release.xcconfig"; sourceTree = "<group>"; };
 		0A35F2781ADB0A71708318B0 /* Pods-PersistenceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersistenceTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PersistenceTests/Pods-PersistenceTests.debug.xcconfig"; sourceTree = "<group>"; };
 		291012E5551975950E8F4596 /* Pods_PersistenceTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PersistenceTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		40905E9B214048BF00751863 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		40905E9C214048BF00751863 /* CoreDataImplementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataImplementation.swift; sourceTree = "<group>"; };
+		40905E9D214048BF00751863 /* CoreDataBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBuilder.swift; sourceTree = "<group>"; };
 		69489F8F21401FDE00ED26DE /* Persistence.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Persistence.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69489F9221401FDE00ED26DE /* Persistence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Persistence.h; sourceTree = "<group>"; };
 		69489F9321401FDE00ED26DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,9 +62,6 @@
 		69FC8FAD214021E9008755CC /* TestModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TestModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		69FC8FAE214021E9008755CC /* CoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		69FC8FB0214021EA008755CC /* RealmTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmTests.swift; sourceTree = "<group>"; };
-		69FC8FB421403226008755CC /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		69FC8FB521403226008755CC /* CoreDataImplementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataImplementation.swift; sourceTree = "<group>"; };
-		69FC8FB621403226008755CC /* CoreDataBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBuilder.swift; sourceTree = "<group>"; };
 		69FC8FBA21403241008755CC /* ErrorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorFactory.swift; sourceTree = "<group>"; };
 		69FC8FBB21403241008755CC /* DatabaseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		69FC8FBD21403241008755CC /* Url.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Url.swift; sourceTree = "<group>"; };
@@ -100,6 +100,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		40905E9A214048BF00751863 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				40905E9B214048BF00751863 /* CoreDataManager.swift */,
+				40905E9C214048BF00751863 /* CoreDataImplementation.swift */,
+				40905E9D214048BF00751863 /* CoreDataBuilder.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		69489F8521401FDE00ED26DE = {
 			isa = PBXGroup;
 			children = (
@@ -123,7 +133,7 @@
 		69489F9121401FDE00ED26DE /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				69FC8F8D214021D5008755CC /* CoreData */,
+				40905E9A214048BF00751863 /* CoreData */,
 				69FC8F91214021D5008755CC /* Helper */,
 				69FC8F96214021D6008755CC /* Protocols */,
 				69FC8F9A214021D6008755CC /* Realm */,
@@ -144,17 +154,6 @@
 			path = PersistenceTests;
 			sourceTree = "<group>";
 		};
-		69FC8F8D214021D5008755CC /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				69FC8FB621403226008755CC /* CoreDataBuilder.swift */,
-				69FC8FB521403226008755CC /* CoreDataImplementation.swift */,
-				69FC8FB421403226008755CC /* CoreDataManager.swift */,
-			);
-			name = CoreData;
-			path = ../../PersistenceFramework/PersistenceFramework/CoreData;
-			sourceTree = "<group>";
-		};
 		69FC8F91214021D5008755CC /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,8 +161,7 @@
 				69FC8FBA21403241008755CC /* ErrorFactory.swift */,
 				69FC8FBC21403241008755CC /* Extensions */,
 			);
-			name = Helper;
-			path = ../../PersistenceFramework/PersistenceFramework/Helper;
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		69FC8F96214021D6008755CC /* Protocols */ = {
@@ -424,17 +422,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				69FC8FB921403226008755CC /* CoreDataBuilder.swift in Sources */,
 				69FC8FA5214021D6008755CC /* DatabaseImplementationProtocol.swift in Sources */,
 				69FC8FC021403241008755CC /* Url.swift in Sources */,
 				69FC8FA8214021D6008755CC /* RealmBuilder.swift in Sources */,
-				69FC8FB721403226008755CC /* CoreDataManager.swift in Sources */,
+				40905E9F214048BF00751863 /* CoreDataImplementation.swift in Sources */,
 				69FC8FA9214021D6008755CC /* RealmImplementation.swift in Sources */,
 				69FC8FBE21403241008755CC /* ErrorFactory.swift in Sources */,
-				69FC8FB821403226008755CC /* CoreDataImplementation.swift in Sources */,
+				40905EA0214048BF00751863 /* CoreDataBuilder.swift in Sources */,
 				69FC8FBF21403241008755CC /* DatabaseHelper.swift in Sources */,
 				69FC8FA7214021D6008755CC /* RealmManager.swift in Sources */,
 				69FC8FA4214021D6008755CC /* DatabaseBuilderProtocol.swift in Sources */,
+				40905E9E214048BF00751863 /* CoreDataManager.swift in Sources */,
 				69FC8FA6214021D6008755CC /* DatabaseProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -588,7 +586,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = T2S8NSR27X;
+				DEVELOPMENT_TEAM = TDPW677V66;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -614,7 +612,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = T2S8NSR27X;
+				DEVELOPMENT_TEAM = TDPW677V66;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -639,7 +637,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T2S8NSR27X;
+				DEVELOPMENT_TEAM = TDPW677V66;
 				INFOPLIST_FILE = PersistenceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -659,7 +657,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T2S8NSR27X;
+				DEVELOPMENT_TEAM = TDPW677V66;
 				INFOPLIST_FILE = PersistenceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

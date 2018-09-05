@@ -1,6 +1,6 @@
 //
 //  ErrorFactory.swift
-//  PersistenceFramework
+//  Persistence
 //
 //  Created by Cristian Barril on 21/3/18.
 //  Copyright © 2018 Cristian Barril. All rights reserved.
