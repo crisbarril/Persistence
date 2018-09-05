@@ -1,5 +1,5 @@
 # Table of contents
-- [PersistenceFramework](#persistenceframework)
+- [Persistence](#Persistence)
 - [Supported databases](#supported-databases)
 - [Installation](#installation)
     + [All databases](#all-databases)
@@ -28,7 +28,7 @@
   * [Realm](#realm-1)
 
   
-# PersistenceFramework
+# Persistence
 Framework to encapsulate persistence logic using Protocol Oriented Programming. This is an EXAMPLE framework to show how to use:
 
 - Cocoapods
@@ -46,17 +46,17 @@ Using Cocoapods, add in your Podfile:
 
 ### All databases
 ```
-pod 'PersistenceFramework'
+pod 'Persistence'
 ```
 
 ### Only Core Data database
 ```
-pod 'PersistenceFramework/CoreData'
+pod 'Persistence/CoreData'
 ```
 
 ### Only Realm database
 ```
-pod 'PersistenceFramework/Realm'
+pod 'Persistence/Realm'
 ```
 
 # How to use
