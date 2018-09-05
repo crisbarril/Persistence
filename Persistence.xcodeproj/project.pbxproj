@@ -10,12 +10,6 @@
 		69489F9921401FDF00ED26DE /* Persistence.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69489F8F21401FDE00ED26DE /* Persistence.framework */; };
 		69489F9E21401FDF00ED26DE /* PersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69489F9D21401FDF00ED26DE /* PersistenceTests.swift */; };
 		69489FA021401FDF00ED26DE /* Persistence.h in Headers */ = {isa = PBXBuildFile; fileRef = 69489F9221401FDE00ED26DE /* Persistence.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69FC8F9E214021D6008755CC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F8E214021D5008755CC /* CoreDataManager.swift */; };
-		69FC8F9F214021D6008755CC /* CoreDataImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F8F214021D5008755CC /* CoreDataImplementation.swift */; };
-		69FC8FA0214021D6008755CC /* CoreDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F90214021D5008755CC /* CoreDataBuilder.swift */; };
-		69FC8FA1214021D6008755CC /* ErrorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F92214021D5008755CC /* ErrorFactory.swift */; };
-		69FC8FA2214021D6008755CC /* Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F94214021D5008755CC /* Url.swift */; };
-		69FC8FA3214021D6008755CC /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F95214021D5008755CC /* DatabaseHelper.swift */; };
 		69FC8FA4214021D6008755CC /* DatabaseBuilderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F97214021D6008755CC /* DatabaseBuilderProtocol.swift */; };
 		69FC8FA5214021D6008755CC /* DatabaseImplementationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F98214021D6008755CC /* DatabaseImplementationProtocol.swift */; };
 		69FC8FA6214021D6008755CC /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8F99214021D6008755CC /* DatabaseProtocol.swift */; };
@@ -25,6 +19,12 @@
 		69FC8FB1214021EA008755CC /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FAB214021E9008755CC /* TestModel.xcdatamodeld */; };
 		69FC8FB2214021EA008755CC /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FAE214021E9008755CC /* CoreDataTests.swift */; };
 		69FC8FB3214021EA008755CC /* RealmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FB0214021EA008755CC /* RealmTests.swift */; };
+		69FC8FB721403226008755CC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FB421403226008755CC /* CoreDataManager.swift */; };
+		69FC8FB821403226008755CC /* CoreDataImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FB521403226008755CC /* CoreDataImplementation.swift */; };
+		69FC8FB921403226008755CC /* CoreDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FB621403226008755CC /* CoreDataBuilder.swift */; };
+		69FC8FBE21403241008755CC /* ErrorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FBA21403241008755CC /* ErrorFactory.swift */; };
+		69FC8FBF21403241008755CC /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FBB21403241008755CC /* DatabaseHelper.swift */; };
+		69FC8FC021403241008755CC /* Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FC8FBD21403241008755CC /* Url.swift */; };
 		825E6D68ECF00F67539F32CF /* Pods_Persistence.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9745EEC2B6F9F65FE99C0D04 /* Pods_Persistence.framework */; };
 		E48023031F1D00005301E3B6 /* Pods_PersistenceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291012E5551975950E8F4596 /* Pods_PersistenceTests.framework */; };
 /* End PBXBuildFile section */
@@ -49,12 +49,6 @@
 		69489F9821401FDF00ED26DE /* PersistenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PersistenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		69489F9D21401FDF00ED26DE /* PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceTests.swift; sourceTree = "<group>"; };
 		69489F9F21401FDF00ED26DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		69FC8F8E214021D5008755CC /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		69FC8F8F214021D5008755CC /* CoreDataImplementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataImplementation.swift; sourceTree = "<group>"; };
-		69FC8F90214021D5008755CC /* CoreDataBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBuilder.swift; sourceTree = "<group>"; };
-		69FC8F92214021D5008755CC /* ErrorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorFactory.swift; sourceTree = "<group>"; };
-		69FC8F94214021D5008755CC /* Url.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Url.swift; sourceTree = "<group>"; };
-		69FC8F95214021D5008755CC /* DatabaseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		69FC8F97214021D6008755CC /* DatabaseBuilderProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseBuilderProtocol.swift; sourceTree = "<group>"; };
 		69FC8F98214021D6008755CC /* DatabaseImplementationProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseImplementationProtocol.swift; sourceTree = "<group>"; };
 		69FC8F99214021D6008755CC /* DatabaseProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
@@ -65,6 +59,12 @@
 		69FC8FAD214021E9008755CC /* TestModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TestModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		69FC8FAE214021E9008755CC /* CoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		69FC8FB0214021EA008755CC /* RealmTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmTests.swift; sourceTree = "<group>"; };
+		69FC8FB421403226008755CC /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		69FC8FB521403226008755CC /* CoreDataImplementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataImplementation.swift; sourceTree = "<group>"; };
+		69FC8FB621403226008755CC /* CoreDataBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBuilder.swift; sourceTree = "<group>"; };
+		69FC8FBA21403241008755CC /* ErrorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorFactory.swift; sourceTree = "<group>"; };
+		69FC8FBB21403241008755CC /* DatabaseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
+		69FC8FBD21403241008755CC /* Url.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Url.swift; sourceTree = "<group>"; };
 		9745EEC2B6F9F65FE99C0D04 /* Pods_Persistence.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Persistence.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3BCD8E01FD6AFBA8E972B76 /* Pods-Persistence.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Persistence.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Persistence/Pods-Persistence.debug.xcconfig"; sourceTree = "<group>"; };
 		A7790B7DE0F5A8671CA5C22F /* Pods-Persistence.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Persistence.release.xcconfig"; path = "Pods/Target Support Files/Pods-Persistence/Pods-Persistence.release.xcconfig"; sourceTree = "<group>"; };
@@ -147,9 +147,9 @@
 		69FC8F8D214021D5008755CC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				69FC8F8E214021D5008755CC /* CoreDataManager.swift */,
-				69FC8F8F214021D5008755CC /* CoreDataImplementation.swift */,
-				69FC8F90214021D5008755CC /* CoreDataBuilder.swift */,
+				69FC8FB621403226008755CC /* CoreDataBuilder.swift */,
+				69FC8FB521403226008755CC /* CoreDataImplementation.swift */,
+				69FC8FB421403226008755CC /* CoreDataManager.swift */,
 			);
 			name = CoreData;
 			path = ../../PersistenceFramework/PersistenceFramework/CoreData;
@@ -158,20 +158,12 @@
 		69FC8F91214021D5008755CC /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				69FC8F92214021D5008755CC /* ErrorFactory.swift */,
-				69FC8F93214021D5008755CC /* Extensions */,
-				69FC8F95214021D5008755CC /* DatabaseHelper.swift */,
+				69FC8FBB21403241008755CC /* DatabaseHelper.swift */,
+				69FC8FBA21403241008755CC /* ErrorFactory.swift */,
+				69FC8FBC21403241008755CC /* Extensions */,
 			);
 			name = Helper;
 			path = ../../PersistenceFramework/PersistenceFramework/Helper;
-			sourceTree = "<group>";
-		};
-		69FC8F93214021D5008755CC /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				69FC8F94214021D5008755CC /* Url.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		69FC8F96214021D6008755CC /* Protocols */ = {
@@ -209,6 +201,14 @@
 				69FC8FB0214021EA008755CC /* RealmTests.swift */,
 			);
 			path = Realm;
+			sourceTree = "<group>";
+		};
+		69FC8FBC21403241008755CC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				69FC8FBD21403241008755CC /* Url.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		6DE10841C68A5C8A620700CA /* Pods */ = {
@@ -424,15 +424,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				69FC8FA0214021D6008755CC /* CoreDataBuilder.swift in Sources */,
-				69FC8F9F214021D6008755CC /* CoreDataImplementation.swift in Sources */,
-				69FC8F9E214021D6008755CC /* CoreDataManager.swift in Sources */,
-				69FC8FA1214021D6008755CC /* ErrorFactory.swift in Sources */,
+				69FC8FB921403226008755CC /* CoreDataBuilder.swift in Sources */,
 				69FC8FA5214021D6008755CC /* DatabaseImplementationProtocol.swift in Sources */,
-				69FC8FA3214021D6008755CC /* DatabaseHelper.swift in Sources */,
+				69FC8FC021403241008755CC /* Url.swift in Sources */,
 				69FC8FA8214021D6008755CC /* RealmBuilder.swift in Sources */,
+				69FC8FB721403226008755CC /* CoreDataManager.swift in Sources */,
 				69FC8FA9214021D6008755CC /* RealmImplementation.swift in Sources */,
-				69FC8FA2214021D6008755CC /* Url.swift in Sources */,
+				69FC8FBE21403241008755CC /* ErrorFactory.swift in Sources */,
+				69FC8FB821403226008755CC /* CoreDataImplementation.swift in Sources */,
+				69FC8FBF21403241008755CC /* DatabaseHelper.swift in Sources */,
 				69FC8FA7214021D6008755CC /* RealmManager.swift in Sources */,
 				69FC8FA4214021D6008755CC /* DatabaseBuilderProtocol.swift in Sources */,
 				69FC8FA6214021D6008755CC /* DatabaseProtocol.swift in Sources */,
