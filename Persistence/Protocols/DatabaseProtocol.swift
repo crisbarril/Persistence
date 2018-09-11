@@ -24,14 +24,6 @@ public protocol DatabaseProtocol {
     func getContext() -> DatabaseContext
 }
 
-public protocol Updatable {
-    func update<DatabaseObject: DatabaseObjectTypeProtocol>(_ object: DatabaseObject) -> Bool
-}
-
-public protocol Saveable {
-    func save() throws
-}
-
 public protocol DatabaseObjectTypeProtocol {
     //Used to validate DatabaseProtocol associatedtype in generics functions. Must extend the database entity object to conform this protocol
     init()

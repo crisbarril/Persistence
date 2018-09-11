@@ -103,9 +103,9 @@
 		40905E9A214048BF00751863 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				40905E9D214048BF00751863 /* CoreDataBuilder.swift */,
 				40905E9B214048BF00751863 /* CoreDataManager.swift */,
 				40905E9C214048BF00751863 /* CoreDataImplementation.swift */,
-				40905E9D214048BF00751863 /* CoreDataBuilder.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -134,9 +134,9 @@
 			isa = PBXGroup;
 			children = (
 				40905E9A214048BF00751863 /* CoreData */,
+				69FC8F9A214021D6008755CC /* Realm */,
 				69FC8F91214021D5008755CC /* Helper */,
 				69FC8F96214021D6008755CC /* Protocols */,
-				69FC8F9A214021D6008755CC /* Realm */,
 				69489F9221401FDE00ED26DE /* Persistence.h */,
 				69489F9321401FDE00ED26DE /* Info.plist */,
 			);
@@ -177,8 +177,8 @@
 		69FC8F9A214021D6008755CC /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				69FC8F9B214021D6008755CC /* RealmManager.swift */,
 				69FC8F9C214021D6008755CC /* RealmBuilder.swift */,
+				69FC8F9B214021D6008755CC /* RealmManager.swift */,
 				69FC8F9D214021D6008755CC /* RealmImplementation.swift */,
 			);
 			path = Realm;

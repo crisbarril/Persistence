@@ -56,7 +56,7 @@ public final class RealmManager: DatabaseProtocol {
     }
 }
 
-extension RealmManager: Updatable {
+extension DatabaseProtocol where Self == RealmManager {
     public func update<T>(_ object: T) -> Bool where T : DatabaseObjectTypeProtocol {
         guard let objectClass = T.self as? Object.Type, let objectInstance = object as? Object else {
             return false

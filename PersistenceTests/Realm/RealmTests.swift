@@ -30,7 +30,7 @@ class RealmTests: XCTestCase {
         
         if !isMigrationInProgress {
             let databaseBuilder = RealmBuilder(databaseName: testDatabaseName, passphrase: testDatabasePassphrase)
-            database = try! databaseBuilder.create() as RealmManager
+            database = try! databaseBuilder.create()
         }
     }
 

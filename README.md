@@ -1,15 +1,16 @@
 # Table of contents
-- [Persistence](#Persistence)
+- [Persistence](#persistence)
 - [Supported databases](#supported-databases)
 - [Installation](#installation)
     + [All databases](#all-databases)
     + [Only Core Data database](#only-core-data-database)
     + [Only Realm database](#only-realm-database)
 - [How to use](#how-to-use)
-  * [Protocols](#protocols)
+  * [Protocol](#protocol)
     + [DatabaseProtocol](#databaseprotocol)
-    + [Updatable Protocol](#updatable-protocol)
-    + [Saveable Protocol](#saveable-protocol)
+    + [Protocol extension](#protocol-extension)
+      - [Saveable](#saveable)
+      - [Updatable](#updatable)
   * [Builders](#builders)
     + [Core Data Builder](#core-data-builder)
     + [Realm Builder](#realm-builder)
@@ -26,13 +27,15 @@
 - [Migrations](#migrations)
   * [Core Data](#core-data-1)
   * [Realm](#realm-1)
-
   
 # Persistence
-Framework to encapsulate persistence logic using Protocol Oriented Programming. This is an EXAMPLE framework to show how to use:
+Framework to encapsulate persistence logic using Protocol Oriented Programming (POP) and Protocols with Associated Types (PATs). This is an EXAMPLE framework to show how to use:
 
 - Cocoapods
+- Core Data
+- Realm
 - Protocol Oriented Programming
+- Protocols with Associated Types
 - Dependency injection
 - Unit Testing
 
@@ -60,9 +63,9 @@ pod 'Persistence/Realm'
 ```
 
 # How to use
-To use this framework, you just have to know a few protocols. This makes easy to change from one database to another.
+To use this framework, you just have to know a **one** protocol. This makes easy to change from one database to another.
 
-## Protocols
+## Protocol
 
 ### DatabaseProtocol
 
@@ -78,23 +81,29 @@ public protocol DatabaseProtocol {
 }
 ```
 
-### Saveable Protocol
+### Protocol extension
 
-Optional protocol used in Core Data.
+#### Saveable
+
+Additional method added to **DatabaseProtocol** by the CoreDataManager:
 
 ```swift
-public protocol Saveable {
-    func save() throws
+extension DatabaseProtocol where Self == CoreDataManager {
+    public func save() throws {
+    	...
+    }
 }
 ```
 
-### Updatable Protocol
+#### Updatable
 
-Optional protocol used in Realm.
+Additional method added to **DatabaseProtocol** by the RealmManager:
 
 ```swift
-public protocol Updatable {
-    func update<DatabaseObject: DatabaseObjectTypeProtocol>(_ object: DatabaseObject) -> Bool
+extension DatabaseProtocol where Self == RealmManager {
+    public func update<T>(_ object: T) -> Bool where T : DatabaseObjectTypeProtocol {
+    	...
+    }
 }
 ```
 
@@ -133,7 +142,7 @@ Use example:
 ```swift
 let modelURL = Bundle.main.url(forResource: "MyModel", withExtension:"momd")
 let databaseBuilder = CoreDataBuilder(databaseName: "CoreDataDatabaseName", bundle: Bundle.main, modelURL: modelURL)
-let database = try? databaseBuilder.create() as CoreDataManager
+let database: CoreDataManager = try? databaseBuilder.create()
 ```
 
 
@@ -167,7 +176,7 @@ Use example:
 
 ```swift
 let databaseBuilder = RealmBuilder(databaseName: "RealmDatabaseName", passphrase: "Passphrase")
-let database = try? databaseBuilder.create() as RealmManager
+let database: RealmManager = try? databaseBuilder.create()
 ```
 
 **REMEMBER:** This is just an example. Feel free to fork this repo and make your own version.

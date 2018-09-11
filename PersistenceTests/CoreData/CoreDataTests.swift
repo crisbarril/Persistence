@@ -23,7 +23,7 @@ class CoreDataTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         testModelURL = testBundle.url(forResource: "TestModel", withExtension:"momd")
         let databaseBuilder = CoreDataBuilder(databaseName: testDatabaseName, bundle: testBundle, modelURL: testModelURL)
-        database = try! databaseBuilder.create() as CoreDataManager
+        database = try! databaseBuilder.create()
     }
     
     override func tearDown() {

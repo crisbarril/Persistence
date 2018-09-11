@@ -57,7 +57,7 @@ public final class CoreDataManager: DatabaseProtocol {
     }
 }
 
-extension CoreDataManager: Saveable {
+extension DatabaseProtocol where Self == CoreDataManager {
     public func save() throws {
         if (context.hasChanges) {
             var saveError: NSError? = nil
